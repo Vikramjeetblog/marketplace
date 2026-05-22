@@ -218,9 +218,12 @@ const Hero = () => (
           >
             Sell Your Product
           </a>
-          <button className="w-full sm:w-auto bg-white text-slate-900 hover:bg-slate-100 px-8 py-4 rounded-full font-bold text-lg shadow-xl transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
-            Explore Products
-          </button>
+          <a
+  href="#products"
+  className="w-full sm:w-auto bg-white text-slate-900 hover:bg-slate-100 px-8 py-4 rounded-full font-bold text-lg shadow-xl transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2 text-center"
+>
+  Explore Products
+</a>
         </div>
       </motion.div>
       <motion.div
@@ -333,7 +336,7 @@ const SearchAndCategories = () => (
 );
 
 const FeaturedProducts = () => (
-  <div className="bg-slate-50 py-24">
+  <div  id="products"className="bg-slate-50 py-24">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
         <div>
