@@ -1,5 +1,5 @@
 import {ArrowRight,ShieldCheck,Heart,MapPin} from "lucide-react";
-import {products} from "../../data/homeData";
+import {products} from "../../data/homedata";
 import {motion} from "framer-motion";
 const FeaturedProducts = () => (
   <div  id="products"className="bg-slate-50 py-24">

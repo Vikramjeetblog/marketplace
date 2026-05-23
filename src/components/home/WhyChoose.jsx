@@ -1,4 +1,4 @@
-import {advantages} from "../../data/homeData";
+import {advantages} from "../../data/homedata";
 import {CheckCircle} from "lucide-react";
 const WhyChooseRupantar = () => (
   <div className="py-24 bg-slate-50">

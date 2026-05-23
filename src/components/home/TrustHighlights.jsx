@@ -1,4 +1,4 @@
-import {trustFeatures} from "../../data/homeData";
+import {trustFeatures} from "../../data/homedata";
 import {motion} from "framer-motion";
 const TrustHighlights = () => (
   <div className="py-20 bg-slate-50">

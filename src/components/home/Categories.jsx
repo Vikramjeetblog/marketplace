@@ -1,5 +1,5 @@
 import {Search} from "lucide-react";
-import {categories} from "../../data/homeData";
+import {categories} from "../../data/homedata";
 import {motion} from "framer-motion";
 const SearchAndCategories = () => (
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">

@@ -1,6 +1,6 @@
 import {UploadCloud,ClipboardCheck,ThumbsUp} from "lucide-react";
 import {motion} from "framer-motion"
-import {advantages} from "../../data/homeData";
+import {advantages} from "../../data/homedata";
 const HowItWorks = () => (
   <div className="py-24 bg-slate-950 text-white overflow-hidden">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
