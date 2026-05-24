@@ -3,19 +3,33 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import HomePage from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
+
+// NEW PAGES
+import SellAssetsPage from "./pages/SellAssetsPage";
+import DiscoverCollectionPage from "./pages/DiscoverCollectionPage";
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        
+
         {/* HOME */}
         <Route path="/" element={<HomePage />} />
 
-        {/* AUTH */}
+        {/* LOGIN */}
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
+
+        {/* SELL FLOW */}
+        <Route
+          path="/sell-assets"
+          element={<SellAssetsPage />}
+        />
+
+        {/* DISCOVER FLOW */}
+        <Route
+          path="/discover"
+          element={<DiscoverCollectionPage />}
+        />
 
       </Routes>
     </BrowserRouter>

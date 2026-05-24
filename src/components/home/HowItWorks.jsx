@@ -1,62 +1,148 @@
-import {UploadCloud,ClipboardCheck,ThumbsUp} from "lucide-react";
-import {motion} from "framer-motion"
-import {advantages} from "../../data/homedata";
-const HowItWorks = () => (
-  <div className="py-24 bg-slate-950 text-white overflow-hidden">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 className="text-3xl font-bold mb-4">How It Works</h2>
-      <p className="text-slate-400 mb-20 max-w-xl mx-auto">
-        Experience the smoothest direct-buy process in North Bengal.
-      </p>
+import {
+  UploadCloud,
+  SearchCheck,
+  BadgeIndianRupee,
+  Truck,
+} from "lucide-react";
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative max-w-5xl mx-auto">
-        <div className="hidden md:block absolute top-1/3 left-[20%] right-[20%] h-0.5 bg-gradient-to-r from-emerald-600/0 via-emerald-600 to-emerald-600/0 -translate-y-1/2 z-0"></div>
+import { motion } from "framer-motion";
 
-        {[
-          {
-            step: "1",
-            title: "Upload Product Details",
-            desc: "Fill out our simple evaluation form.",
-            icon: UploadCloud,
-          },
-          {
-            step: "2",
-            title: "Get Expert Evaluation",
-            desc: "Our team reviews and offers the best price.",
-            icon: ClipboardCheck,
-          },
-          {
-            step: "3",
-            title: "Sell Easily",
-            desc: "We pick it up and you get paid instantly.",
-            icon: ThumbsUp,
-          },
-        ].map((item, idx) => (
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.2 }}
-            className="relative z-10 flex flex-col items-center"
-          >
-            <div className="w-20 h-20 rounded-2xl bg-slate-900 border border-slate-800 text-emerald-500 flex items-center justify-center mb-6 shadow-xl shadow-black relative group">
-              <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center text-sm border-4 border-slate-950">
-                {item.step}
-              </div>
-              <item.icon
-                size={32}
-                className="group-hover:scale-110 transition-transform"
-              />
-            </div>
-            <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-            <p className="text-slate-400 text-sm px-4 leading-relaxed">
-              {item.desc}
-            </p>
-          </motion.div>
-        ))}
+const steps = [
+  {
+    step: "01",
+    title: "Submit Product",
+    desc: "Share office asset details with photos and specifications.",
+    icon: UploadCloud,
+    color: "from-emerald-500 to-emerald-600",
+    bg: "bg-emerald-50",
+  },
+  {
+    step: "02",
+    title: "Team Evaluation",
+    desc: "Our experts inspect and evaluate the best market value.",
+    icon: SearchCheck,
+    color: "from-sky-500 to-blue-600",
+    bg: "bg-sky-50",
+  },
+  {
+    step: "03",
+    title: "Get Best Offer",
+    desc: "Receive a transparent commercial offer from RUPANTAR.",
+    icon: BadgeIndianRupee,
+    color: "from-amber-400 to-orange-500",
+    bg: "bg-amber-50",
+  },
+  {
+    step: "04",
+    title: "Pickup & Payment",
+    desc: "We arrange pickup and process secure instant payment.",
+    icon: Truck,
+    color: "from-violet-500 to-indigo-600",
+    bg: "bg-violet-50",
+  },
+];
+
+const HowItWorks = () => {
+  return (
+    <section className="py-16 lg:py-20 bg-[#020B2D] overflow-hidden">
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {/* HEADER */}
+        <div className="text-center mb-14">
+
+          <p className="text-[11px] tracking-[0.28em] uppercase text-emerald-400 font-semibold mb-3">
+            PROCESS
+          </p>
+
+          <h2 className="text-3xl lg:text-5xl font-semibold tracking-tight text-white mb-5">
+            How RUPANTAR Works
+          </h2>
+
+          <p className="text-sm lg:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
+            A smooth and transparent resale process built for businesses,
+            offices and commercial asset owners.
+          </p>
+        </div>
+
+        {/* PROCESS FLOW */}
+        <div className="relative">
+
+          {/* CONNECTING LINE */}
+          <div className="hidden lg:block absolute top-20 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-slate-700 to-transparent" />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative z-10">
+
+            {steps.map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.12 }}
+                whileHover={{ y: -5 }}
+                className="group relative"
+              >
+                {/* CARD */}
+                <div className="relative h-full rounded-[30px] bg-white/5 backdrop-blur-xl border border-white/10 p-7 overflow-hidden hover:border-white/20 transition-all duration-300">
+
+                  {/* GLOW */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_top_right,_rgba(16,185,129,0.12),transparent_55%)]" />
+
+                  {/* STEP NUMBER */}
+                  <div className="absolute top-5 right-5 text-[12px] font-semibold tracking-[0.22em] text-white/20">
+                    {item.step}
+                  </div>
+
+                  {/* ICON */}
+                  <div
+                    className={`relative z-10 w-16 h-16 rounded-2xl ${item.bg} flex items-center justify-center mb-7 shadow-lg`}
+                  >
+                    <div
+                      className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${item.color} opacity-10`}
+                    />
+
+                    <item.icon
+                      size={30}
+                      strokeWidth={1.9}
+                      className="text-slate-900"
+                    />
+                  </div>
+
+                  {/* CONTENT */}
+                  <div className="relative z-10">
+
+                    <h3 className="text-[22px] font-semibold tracking-tight text-white mb-3">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-sm leading-relaxed text-slate-400">
+                      {item.desc}
+                    </p>
+
+                    {/* FOOTER */}
+                    <div className="mt-7 flex items-center gap-3">
+
+                      <div
+                        className={`w-9 h-[2px] rounded-full bg-gradient-to-r ${item.color}`}
+                      />
+
+                      <span className="text-[11px] tracking-[0.18em] uppercase font-semibold text-white/40">
+                        Simple Process
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* HOVER SHADOW */}
+                  <div className="absolute inset-0 rounded-[30px] shadow-[0_0_80px_rgba(16,185,129,0.04)] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-);
+    </section>
+  );
+};
+
 export default HowItWorks;
