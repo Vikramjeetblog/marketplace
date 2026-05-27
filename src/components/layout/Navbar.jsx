@@ -1,91 +1,125 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
 import {
-  Menu,
-  X,
   Search,
   ChevronDown,
   ShoppingCart,
 } from "lucide-react";
 
 import { Link } from "react-router-dom";
+
+import toast from "react-hot-toast";
+
 import LoginPage from "../../pages/LoginPage";
 
+import ConfirmModal from "../common/ConfirmModal";
+
+// USER STORE
+import { useUserStore } from "../../store/useUserStore";
+
+// PRODUCT STORE
+import useProductStore from "../../store/useProductStore";
+
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
 
-  const [showLogin, setShowLogin] = useState(false);
+  const [showLogin, setShowLogin] =
+    useState(false);
 
-  // LOGIN STATE
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showDropdown, setShowDropdown] =
+    useState(false);
 
-  // USER DATA
-  const [user, setUser] = useState(null);
+  const [
+    showLogoutModal,
+    setShowLogoutModal,
+  ] = useState(false);
 
-  // CART
-  const [cartItems] = useState([]);
+  const dropdownRef =
+    useRef(null);
 
-  // DROPDOWN
-  const [showDropdown, setShowDropdown] = useState(false);
+  // USER STORE
+  const {
+    user,
+    logout,
+  } = useUserStore();
 
-  const dropdownRef = useRef(null);
+  // PRODUCT STORE
+  const {
+    cart,
+    clearCart,
+  } = useProductStore();
 
-  // LOAD USER FROM LOCAL STORAGE
-  useEffect(() => {
-    const savedUser = localStorage.getItem("rupantarUser");
+  // LOGIN STATUS
+  const isLoggedIn =
+    !!user;
 
-    if (savedUser) {
-      const parsedUser = JSON.parse(savedUser);
-
-      setUser(parsedUser);
-
-      setIsLoggedIn(true);
-    }
-  }, []);
-
-  // DISABLE BODY SCROLL
-  useEffect(() => {
-    if (showLogin) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-
-    return () => {
-      document.body.style.overflow = "auto";
-    };
-  }, [showLogin]);
+  // TOTAL CART ITEMS
+  const totalCartItems =
+    cart.reduce(
+      (acc, item) =>
+        acc + item.qty,
+      0
+    );
 
   // CLOSE DROPDOWN
   useEffect(() => {
-    const handleClickOutside = (event) => {
+
+    const handleClickOutside = (
+      event
+    ) => {
+
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
+        !dropdownRef.current.contains(
+          event.target
+        )
       ) {
-        setShowDropdown(false);
+
+        setShowDropdown(
+          false
+        );
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
 
     return () => {
+
       document.removeEventListener(
         "mousedown",
         handleClickOutside
       );
     };
+
   }, []);
 
-  // LOGOUT
-  const handleLogout = () => {
-    localStorage.removeItem("rupantarUser");
+  // DISABLE BODY SCROLL
+  useEffect(() => {
 
-    setIsLoggedIn(false);
+    if (showLogin) {
 
-    setUser(null);
+      document.body.style.overflow =
+        "hidden";
 
-    setShowDropdown(false);
-  };
+    } else {
+
+      document.body.style.overflow =
+        "auto";
+    }
+
+    return () => {
+
+      document.body.style.overflow =
+        "auto";
+    };
+
+  }, [showLogin]);
 
   return (
     <>
@@ -101,11 +135,13 @@ const Navbar = () => {
               to="/"
               className="flex items-center gap-3 shrink-0"
             >
+
               <div className="w-11 h-11 rounded-2xl bg-[#43C6B8] flex items-center justify-center text-white font-black text-lg">
                 R
               </div>
 
               <div className="hidden sm:block">
+
                 <h1 className="text-[20px] font-black tracking-tight text-[#020B2D]">
                   RUPANTAR
                 </h1>
@@ -138,43 +174,66 @@ const Navbar = () => {
             <div className="flex items-center gap-4">
 
               {/* CART */}
-              {isLoggedIn && cartItems.length > 0 && (
-                <button className="relative text-[#031B4E]">
+              {isLoggedIn &&
+                cart.length > 0 && (
+
+                <Link
+                  to="/cart"
+                  className="relative w-11 h-11 rounded-full border border-[#D7E2F0] bg-white hover:bg-[#F8FBFD] transition-all flex items-center justify-center text-[#031B4E]"
+                >
 
                   <ShoppingCart size={22} />
 
-                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-[#43C6B8] text-white text-[10px] flex items-center justify-center font-semibold">
-                    {cartItems.length}
+                  {/* COUNT */}
+                  <span className="absolute -top-1 -right-1 min-w-[22px] h-[22px] px-1 rounded-full bg-[#43C6B8] text-white text-[11px] flex items-center justify-center font-bold">
+
+                    {totalCartItems}
                   </span>
-                </button>
+                </Link>
               )}
 
-              {/* LOGIN BUTTON */}
+              {/* LOGIN */}
               {!isLoggedIn ? (
+
                 <button
-                  onClick={() => setShowLogin(true)}
+                  onClick={() =>
+                    setShowLogin(
+                      true
+                    )
+                  }
                   className="h-11 px-6 rounded-full bg-[#020B2D] text-white text-sm font-semibold hover:bg-[#031B4E] transition-all"
                 >
                   Login
                 </button>
+
               ) : (
+
                 <div
                   className="relative"
                   ref={dropdownRef}
                 >
+
+                  {/* USER BUTTON */}
                   <button
                     onClick={() =>
-                      setShowDropdown(!showDropdown)
+                      setShowDropdown(
+                        !showDropdown
+                      )
                     }
                     className="flex items-center gap-3 h-11 px-4 rounded-full border border-[#D7E2F0] bg-white hover:bg-[#F8FBFD] transition-all"
                   >
-                    {/* USER ICON */}
+
+                    {/* AVATAR */}
                     <div className="w-8 h-8 rounded-full bg-[#43C6B8] text-white flex items-center justify-center text-sm font-bold uppercase">
-                      {user?.name?.charAt(0)}
+
+                      {user?.name?.charAt(
+                        0
+                      )}
                     </div>
 
-                    {/* USER NAME */}
+                    {/* NAME */}
                     <span className="text-sm font-semibold text-[#031B4E]">
+
                       {user?.name}
                     </span>
 
@@ -190,16 +249,19 @@ const Navbar = () => {
 
                   {/* DROPDOWN */}
                   {showDropdown && (
+
                     <div className="absolute right-0 mt-3 w-72 bg-white border border-[#E5EEF8] rounded-[24px] shadow-[0_20px_50px_rgba(2,11,45,0.12)] overflow-hidden">
 
                       {/* USER INFO */}
                       <div className="px-6 py-5 border-b border-[#EEF4FA]">
 
                         <h3 className="text-[16px] font-bold text-[#020B2D]">
+
                           {user?.name}
                         </h3>
 
                         <p className="text-sm text-[#6E7C96] mt-1">
+
                           {user?.email}
                         </p>
                       </div>
@@ -207,26 +269,68 @@ const Navbar = () => {
                       {/* MENU */}
                       <div className="py-2">
 
-                        <button className="w-full px-6 py-3 text-left text-sm text-[#031B4E] hover:bg-[#F8FBFD] transition-colors">
+                        <Link
+                          to="/account/orders"
+                          onClick={() =>
+                            setShowDropdown(
+                              false
+                            )
+                          }
+                          className="block w-full px-6 py-3 text-left text-sm text-[#031B4E] hover:bg-[#F8FBFD] transition-colors"
+                        >
                           My Orders
-                        </button>
+                        </Link>
 
-                        <button className="w-full px-6 py-3 text-left text-sm text-[#031B4E] hover:bg-[#F8FBFD] transition-colors">
-                          Saved Products
-                        </button>
+                        <Link
+                          to="/account/payment-methods"
+                          onClick={() =>
+                            setShowDropdown(
+                              false
+                            )
+                          }
+                          className="block w-full px-6 py-3 text-left text-sm text-[#031B4E] hover:bg-[#F8FBFD] transition-colors"
+                        >
+                          Saved Payment Method
+                        </Link>
 
-                        <button className="w-full px-6 py-3 text-left text-sm text-[#031B4E] hover:bg-[#F8FBFD] transition-colors">
-                          Evaluation Requests
-                        </button>
+                        <Link
+                          to="/account/earnings"
+                          onClick={() =>
+                            setShowDropdown(
+                              false
+                            )
+                          }
+                          className="block w-full px-6 py-3 text-left text-sm text-[#031B4E] hover:bg-[#F8FBFD] transition-colors"
+                        >
+                          Earnings
+                        </Link>
 
-                        <button className="w-full px-6 py-3 text-left text-sm text-[#031B4E] hover:bg-[#F8FBFD] transition-colors">
+                        <Link
+                          to="/account/addresses"
+                          onClick={() =>
+                            setShowDropdown(
+                              false
+                            )
+                          }
+                          className="block w-full px-6 py-3 text-left text-sm text-[#031B4E] hover:bg-[#F8FBFD] transition-colors"
+                        >
                           Saved Addresses
-                        </button>
+                        </Link>
 
                         <div className="border-t border-[#EEF4FA] my-2" />
 
+                        {/* LOGOUT */}
                         <button
-                          onClick={handleLogout}
+                          onClick={() => {
+
+                            setShowDropdown(
+                              false
+                            );
+
+                            setShowLogoutModal(
+                              true
+                            );
+                          }}
                           className="w-full px-6 py-3 text-left text-sm text-red-500 hover:bg-red-50 transition-colors"
                         >
                           Logout
@@ -236,18 +340,6 @@ const Navbar = () => {
                   )}
                 </div>
               )}
-
-              {/* MOBILE MENU */}
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden text-[#031B4E]"
-              >
-                {isOpen ? (
-                  <X size={26} />
-                ) : (
-                  <Menu size={26} />
-                )}
-              </button>
             </div>
           </div>
 
@@ -273,12 +365,47 @@ const Navbar = () => {
 
       {/* LOGIN MODAL */}
       {showLogin && (
+
         <LoginPage
-          setShowLogin={setShowLogin}
-          setIsLoggedIn={setIsLoggedIn}
-          setUser={setUser}
+          setShowLogin={
+            setShowLogin
+          }
         />
       )}
+
+      {/* LOGOUT MODAL */}
+      <ConfirmModal
+        isOpen={
+          showLogoutModal
+        }
+        title="Logout Account?"
+        description="Are you sure you want to logout from your Rupantar account?"
+        confirmText="Logout"
+        cancelText="Cancel"
+        onCancel={() =>
+          setShowLogoutModal(
+            false
+          )
+        }
+        onConfirm={() => {
+
+          // CLEAR CART
+          clearCart();
+
+          // LOGOUT USER
+          logout();
+
+          // CLOSE MODAL
+          setShowLogoutModal(
+            false
+          );
+
+          // TOAST
+          toast.success(
+            "Logged out successfully"
+          );
+        }}
+      />
     </>
   );
 };

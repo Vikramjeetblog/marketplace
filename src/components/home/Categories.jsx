@@ -1,100 +1,68 @@
 import { motion } from "framer-motion";
 
-const categories = [
-  {
-    id: 1,
-    title: "Office Chairs",
-    tag: "Furniture",
-    image:
-      "https://images.unsplash.com/photo-1505797149-43f89335d7b4?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 2,
-    title: "Office Tables",
-    tag: "Workspace",
-    image:
-      "https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    title: "Desktops",
-    tag: "Electronics",
-    image:
-      "https://images.unsplash.com/photo-1496171367470-9ed9a91ea931?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    title: "Laptops",
-    tag: "Refurbished",
-    image:
-      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 5,
-    title: "Workstations",
-    tag: "Commercial",
-    image:
-      "https://images.unsplash.com/photo-1497366754035-f200968a6e72?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 6,
-    title: "Office Storage",
-    tag: "Storage",
-    image:
-      "https://images.unsplash.com/photo-1486946255434-2466348c2166?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 7,
-    title: "Printers",
-    tag: "Equipment",
-    image:
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 8,
-    title: "Conference Setup",
-    tag: "Corporate",
-    image:
-      "https://images.unsplash.com/photo-1497366412874-3415097a27e7?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 9,
-    title: "Office Essentials",
-    tag: "Essentials",
-    image:
-      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 10,
-    title: "Bulk Assets",
-    tag: "Liquidation",
-    image:
-      "https://images.unsplash.com/photo-1556740749-887f6717d7e4?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 11,
-    title: "Accessories",
-    tag: "Workspace",
-    image:
-      "https://images.unsplash.com/photo-1517336714739-489689fd1ca8?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    id: 12,
-    title: "Office Furniture",
-    tag: "Premium",
-    image:
-      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
-  },
-];
+import {
+  ArrowRight,
+} from "lucide-react";
+
+import {
+  useNavigate,
+} from "react-router-dom";
+
+import useProductStore from "../../store/useProductStore";
 
 const CategoriesSection = () => {
+
+  const navigate =
+    useNavigate();
+
+  // PRODUCTS
+  const { products } =
+    useProductStore();
+
+  // CREATE DYNAMIC CATEGORIES
+  const categories =
+    Object.values(
+
+      products.reduce(
+        (acc, product) => {
+
+          const key =
+            product.category;
+
+          if (!acc[key]) {
+
+            acc[key] = {
+
+              id: key,
+
+              title:
+                product.category,
+
+              image:
+                product.images?.[0],
+
+              count: 1,
+            };
+
+          } else {
+
+            acc[key].count += 1;
+          }
+
+          return acc;
+
+        },
+        {}
+      )
+    );
+
   return (
     <section className="py-16 lg:py-20 bg-white overflow-hidden">
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* HEADER */}
-        <div className="flex items-end justify-between mb-10">
+        <div className="flex items-end justify-between mb-12">
 
           <div>
 
@@ -107,71 +75,160 @@ const CategoriesSection = () => {
             </h2>
           </div>
 
-          <div className="hidden lg:block max-w-sm">
-           
-          </div>
+          {/* VIEW ALL */}
+          <button
+            onClick={() =>
+              navigate("/discover")
+            }
+            className="hidden md:flex items-center gap-2 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors"
+          >
+
+            View All
+
+            <ArrowRight
+              size={16}
+            />
+          </button>
         </div>
 
         {/* GRID */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-          {categories.map((category) => (
-            <motion.div
-              key={category.id}
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.25 }}
-              className="group cursor-pointer"
-            >
-              <div className="relative rounded-[28px] overflow-hidden bg-white border border-slate-200 hover:border-emerald-200 hover:shadow-2xl hover:shadow-slate-200/60 transition-all duration-500">
+          {categories.map(
+            (
+              category,
+              index
+            ) => (
 
-                {/* IMAGE */}
-                <div className="relative aspect-[1.15/1] overflow-hidden bg-gradient-to-br from-[#eef7f4] via-white to-[#f4f7fb]">
+              <motion.div
+                key={category.id}
+                initial={{
+                  opacity: 0,
+                  y: 40,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                transition={{
+                  delay:
+                    index * 0.05,
+                }}
+                viewport={{
+                  once: true,
+                }}
+                whileHover={{
+                  y: -8,
+                }}
+                onClick={() =>
+                  navigate(
+                    `/discover?category=${encodeURIComponent(
+                      category.title
+                    )}`
+                  )
+                }
+                className="group cursor-pointer"
+              >
 
-                  {/* TOP TAG */}
-                  <div className="absolute top-4 left-4 z-20">
+                <div className="relative rounded-[30px] overflow-hidden bg-white border border-slate-200 hover:border-emerald-200 hover:shadow-[0_20px_70px_rgba(2,19,59,0.10)] transition-all duration-500">
 
-                    <div className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 shadow-sm">
+                  {/* IMAGE */}
+                  <div className="relative h-[290px] overflow-hidden bg-gradient-to-br from-[#eef7f4] via-white to-[#f4f7fb]">
 
-                      <span className="text-[10px] font-bold tracking-[0.18em] uppercase text-emerald-700">
-                        {category.tag}
-                      </span>
+                    {/* TOP TAG */}
+                    <div className="absolute top-4 left-4 z-20">
+
+                      <div className="px-4 py-2 rounded-full bg-white/90 backdrop-blur-md border border-slate-200 shadow-sm">
+
+                        <span className="text-[10px] font-bold tracking-[0.18em] uppercase text-emerald-700">
+
+                          CATEGORY
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* PRODUCT COUNT */}
+                    <div className="absolute top-4 right-4 z-20">
+
+                      <div className="px-3 py-2 rounded-full bg-[#02133B] text-white text-xs font-bold shadow-lg">
+
+                        {
+                          category.count
+                        }{" "}
+                        Products
+                      </div>
+                    </div>
+
+                    {/* IMAGE */}
+                    <img
+                      src={
+                        category.image
+                      }
+                      alt={
+                        category.title
+                      }
+                      className="w-full h-full object-cover group-hover:scale-[1.08] transition-transform duration-700"
+                    />
+
+                    {/* OVERLAY */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#020B2D]/20 via-transparent to-transparent" />
+                  </div>
+
+                  {/* CONTENT */}
+                  <div className="p-6">
+
+                    <h3 className="text-[22px] font-bold tracking-tight text-[#020B2D] leading-snug">
+
+                      {
+                        category.title
+                      }
+                    </h3>
+
+                    {/* FOOTER */}
+                    <div className="mt-6 flex items-center justify-between">
+
+                      <div className="flex items-center gap-2">
+
+                        <div className="w-8 h-[2px] rounded-full bg-emerald-500" />
+
+                        <span className="text-[11px] tracking-[0.18em] uppercase font-semibold text-emerald-600">
+
+                          Explore Category
+                        </span>
+                      </div>
+
+                      {/* CTA */}
+                      <button
+                        onClick={(
+                          e
+                        ) => {
+
+                          e.preventDefault();
+
+                          e.stopPropagation();
+
+                          navigate(
+                            `/discover?category=${encodeURIComponent(
+                              category.title
+                            )}`
+                          );
+                        }}
+                        className="w-11 h-11 rounded-2xl bg-gradient-to-r from-[#02133B] to-[#0EA5E9] text-white flex items-center justify-center hover:scale-110 transition-all shadow-lg"
+                      >
+
+                        <ArrowRight
+                          size={18}
+                        />
+                      </button>
                     </div>
                   </div>
 
-                  {/* IMAGE */}
-                  <img
-                    src={category.image}
-                    alt={category.title}
-                    className="w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-700"
-                  />
-
-                  {/* OVERLAY */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#020B2D]/10 via-transparent to-transparent" />
+                  {/* HOVER GLOW */}
+                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_top_right,_rgba(16,185,129,0.08),transparent_45%)]" />
                 </div>
-
-                {/* CONTENT */}
-                <div className="p-5">
-
-                  <h3 className="text-[18px] lg:text-[19px] font-semibold tracking-tight text-[#020B2D] leading-snug">
-                    {category.title}
-                  </h3>
-
-                  {/* FOOTER */}
-                  <div className="mt-5 flex items-center gap-2">
-
-                    <div className="w-8 h-[2px] rounded-full bg-emerald-500" />
-
-                    <span className="text-[11px] tracking-[0.18em] uppercase font-semibold text-emerald-600">
-                      Explore
-                    </span>
-                  </div>
-                </div>
-
-                {/* HOVER GLOW */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-[radial-gradient(circle_at_top_right,_rgba(16,185,129,0.08),transparent_45%)]" />
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            )
+          )}
         </div>
       </div>
     </section>
