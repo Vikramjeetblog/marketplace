@@ -24,6 +24,7 @@ import DiscoverCollectionPage from "./pages/DiscoverCollectionPage";
 import ProductDetails from "./pages/ProductDetails";
 import CheckOut from "./pages/CheckOut";
 import CartPage from "./pages/CartPage";
+import SellCategoryPage from "./pages/sell/SellCategoryPage";
 // ACCOUNT PAGES
 import MyOrdersPage from "./pages/account/MyOrders";
 import PaymentMethod from "./pages/account/PaymentMethod";
@@ -77,6 +78,7 @@ const App = () => {
           path="/sell-assets"
           element={<SellAssetsPage />}
         />
+        <Route path="/sell/:categoryId" element={<SellCategoryPage />} />
 
         {/* DISCOVER */}
         <Route
