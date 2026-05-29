@@ -30,6 +30,11 @@ import MyOrdersPage from "./pages/account/MyOrders";
 import PaymentMethod from "./pages/account/PaymentMethod";
 import SavedAddresses from "./pages/account/SavedAddresses";
 import Earnings from "./pages/account/Earnings";
+import SchedulePickup from "./pages/sell/SchedulePickup";
+import Payment from "./pages/sell/Payment";
+import ReviewOrder from "./pages/sell/ReviewOrder";
+import Success from "./pages/sell/Success";
+import OrderDetails from "./pages/account/OrderDetails";
 const App = () => {
   return (
     <BrowserRouter>
@@ -79,6 +84,26 @@ const App = () => {
           element={<SellAssetsPage />}
         />
         <Route path="/sell/:categoryId" element={<SellCategoryPage />} />
+        <Route
+  path="/sell/pickup"
+  element={<SchedulePickup />}/>
+  <Route
+  path="/sell/payment"
+  element={<Payment />}
+/>
+<Route
+  path="/sell/review"
+  element={<ReviewOrder />}
+/>
+<Route
+  path="/sell/success"
+  element={<Success />}
+/>
+<Route
+  path="/account/orders/:orderId"
+  element={<OrderDetails />}
+/>
+
 
         {/* DISCOVER */}
         <Route

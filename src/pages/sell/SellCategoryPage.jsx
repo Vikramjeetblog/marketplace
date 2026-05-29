@@ -14,17 +14,14 @@ const SellCategoryPage = () => {
   const setCategory = useSellStore((state) => state.setCategory);
   const selectedCategory = useSellStore((state) => state.selectedCategory);
 
-  // Find category from data
   const category = sellCategories.find((item) => item.id === categoryId);
 
-  // Save category to store when it changes
   useEffect(() => {
     if (category && (!selectedCategory || selectedCategory.id !== category.id)) {
       setCategory(category);
     }
   }, [category, selectedCategory, setCategory]);
 
-  // Show not found page
   if (!category) {
     return (
       <div className="min-h-screen bg-[#F5F7FA] flex items-center justify-center px-4">
@@ -40,7 +37,6 @@ const SellCategoryPage = () => {
     );
   }
 
-  // Render correct flow based on category type
   const renderFlow = () => {
     switch (category.type) {
       case "structured":
@@ -56,16 +52,14 @@ const SellCategoryPage = () => {
 
   return (
     <div className="min-h-screen bg-[#F5F7FA] text-[#111827]">
-      {/* ==================== HERO SECTION ==================== */}
+      {/* HERO SECTION */}
       <section className="relative overflow-hidden border-b border-gray-100 bg-gradient-to-br from-white via-[#FAFAFA] to-white">
         <div
           className="absolute top-[-100px] left-[-100px] w-[600px] h-[600px] blur-[160px] opacity-20"
           style={{ background: category.accent }}
         />
-
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16 md:py-20">
           <div className="grid lg:grid-cols-[1.05fr_1fr] gap-16 items-center">
-            {/* Left Content */}
             <div className="space-y-8">
               <div className="inline-flex items-center gap-3 rounded-full border border-emerald-200 bg-emerald-50 px-6 py-2.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -86,7 +80,6 @@ const SellCategoryPage = () => {
                 Transparent evaluation, fair pricing, and hassle-free selling.
               </p>
 
-              {/* Trust Stats */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
                 {[
                   { value: "2002", label: "Established" },
@@ -107,7 +100,6 @@ const SellCategoryPage = () => {
               </div>
             </div>
 
-            {/* Right Image */}
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-emerald-100/40 to-transparent rounded-[42px]" />
               <div className="overflow-hidden rounded-[42px] border border-gray-200 shadow-2xl">
@@ -122,10 +114,10 @@ const SellCategoryPage = () => {
         </div>
       </section>
 
-      {/* ==================== FLOW SECTION ==================== */}
-      <section className="bg-[#FAFAFA] py-12">
+      {/* FLOW SECTION */}
+      <section className="bg-[#F5F7FA] py-12">
         <div className="max-w-5xl mx-auto px-6">
-          {/* Dynamic Journey Progress */}
+          {/* Journey Progress */}
           <div className="flex items-center gap-4 overflow-x-auto pb-6 mb-10 hide-scroll">
             {category.flowSteps.map((step, index) => (
               <React.Fragment key={step.id}>
@@ -135,7 +127,6 @@ const SellCategoryPage = () => {
                   </div>
                   <span className="font-semibold text-[#111827]">{step.title}</span>
                 </div>
-
                 {index !== category.flowSteps.length - 1 && (
                   <div className="w-12 h-px bg-gray-300 shrink-0" />
                 )}
@@ -143,13 +134,11 @@ const SellCategoryPage = () => {
             ))}
           </div>
 
-          {/* Dynamic Flow Component */}
           {renderFlow()}
         </div>
       </section>
 
-      {/* ==================== TRUST, TESTIMONIALS & FAQ ==================== */}
-      {/* TRUST SECTION */}
+      {/* TRUST / WHY US SECTION */}
       <section className="relative py-24 bg-[#020B2D] overflow-hidden">
         <div className="absolute top-10 right-10 w-[500px] h-[500px] bg-[#00C896]/10 blur-[140px]" />
         <div className="relative max-w-6xl mx-auto px-6 text-center">
@@ -186,9 +175,7 @@ const SellCategoryPage = () => {
         </div>
       </section>
 
-      
- 
-            {/* TESTIMONIALS SECTION */}
+      {/* TESTIMONIALS */}
       <section className="py-20 bg-white">
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
@@ -262,32 +249,23 @@ const SellCategoryPage = () => {
               Everything you need to know about selling your phone
             </p>
           </div>
-
           <div className="space-y-4">
             {[
               {
                 q: "How is the price of my phone decided?",
-                a: "Our experts evaluate your device based on its model, condition, age, and current market demand. You get a transparent breakdown before finalizing the sale.",
+                a: "Our experts evaluate your device based on its model, condition, age, and current market demand.",
               },
               {
                 q: "Do you pick up the phone from my home?",
-                a: "Yes! We offer free pickup service across Indore and most major cities. You can also visit our store if you prefer.",
+                a: "Yes! We offer free pickup service across Indore and most major cities.",
               },
               {
                 q: "How long does the entire process take?",
-                a: "Most sales are completed within 24-48 hours from the time of inspection. Instant payment is made once the device is verified.",
+                a: "Most sales are completed within 24-48 hours from inspection.",
               },
               {
-                q: "What if my phone has scratches or minor damage?",
-                a: "No problem. We accept phones in all conditions. The price is adjusted fairly based on the actual condition of the device.",
-              },
-              {
-                q: "Is my data safe during the selling process?",
-                a: "Absolutely. We factory reset the device in front of you and follow strict data privacy protocols.",
-              },
-              {
-                q: "What payment methods do you accept?",
-                a: "We offer instant payment via UPI, Bank Transfer, or Cash — whichever is convenient for you.",
+                q: "Is my data safe?",
+                a: "Absolutely. We factory reset the device in front of you.",
               },
             ].map((faq, index) => (
               <details
@@ -306,6 +284,9 @@ const SellCategoryPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Bottom Padding */}
+      <div className="h-24"></div>
     </div>
   );
 };

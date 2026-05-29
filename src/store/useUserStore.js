@@ -48,6 +48,43 @@ export const useUserStore = create(
     user: savedUser,
 
     orders: savedOrders,
+    addOrder: (order) =>
+  set((state) => {
+    const updated = [
+      order,
+      ...state.orders,
+    ];
+
+    localStorage.setItem(
+      "orders",
+      JSON.stringify(updated)
+    );
+
+    return {
+      orders: updated,
+    };
+  }),
+  cancelOrder: (orderId) =>
+  set((state) => {
+    const updatedOrders = state.orders.map(
+      (order) =>
+        order.id === orderId
+          ? {
+              ...order,
+              status: "Cancelled",
+            }
+          : order
+    );
+
+    localStorage.setItem(
+      "orders",
+      JSON.stringify(updatedOrders)
+    );
+
+    return {
+      orders: updatedOrders,
+    };
+  }),
 
     savedProducts: savedProducts,
 

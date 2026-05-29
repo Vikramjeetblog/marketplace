@@ -1,213 +1,287 @@
 import React, { useEffect, useMemo } from "react";
 import {
-  CheckCircle2,
   ArrowRight,
+  CheckCircle2,
   ShieldCheck,
-  Sparkles,
-  Wallet,
+  Truck,
+  CreditCard,
+  Lock,
+  BadgeCheck,
 } from "lucide-react";
 import useSellStore from "../../../store/useSellStore";
-
+import { useNavigate } from "react-router-dom";
 const QuoteScreen = ({ category }) => {
   const {
     selectedBrand,
     selectedModel,
     selectedCondition,
-    estimatedPrice,
     setEstimatedPrice,
   } = useSellStore();
+   const navigate = useNavigate();
 
-  // Price Rules from category
+
   const rules = category.priceRules || {};
   const basePrice = rules.basePrice || 0;
 
-  // Calculate deductions
   const deductions = useMemo(() => {
     let total = 0;
     const breakdown = [];
 
     Object.entries(selectedCondition).forEach(([key, value]) => {
       const deduction = rules?.deductions?.[key]?.[value] || 0;
+
       total += deduction;
-      breakdown.push({ key, value, deduction });
+
+      breakdown.push({
+        key,
+        value,
+        deduction,
+      });
     });
 
     return { total, breakdown };
   }, [selectedCondition, rules]);
 
-  // Final Price
   const finalPrice = Math.max(basePrice - deductions.total, 0);
 
-  // Save price to store
   useEffect(() => {
     setEstimatedPrice(finalPrice);
   }, [finalPrice, setEstimatedPrice]);
 
   return (
-    <div className="h-full flex flex-col">
-      {/* HEADER */}
-      <div className="mb-12">
-        <div
-          className="w-20 h-20 rounded-3xl flex items-center justify-center mb-6"
-          style={{ background: `${category.accent}20` }}
-        >
-          <Wallet size={42} style={{ color: category.accent }} />
-        </div>
+    <div className="max-w-6xl mx-auto px-4">
+      <div className="grid lg:grid-cols-2 gap-8">
 
-        <p className="text-sm uppercase tracking-[0.28em] text-white/40 mb-3">
-          INSTANT VALUATION
-        </p>
-        <h2 className="text-5xl font-light tracking-[-0.05em] text-white leading-tight mb-4">
-          Your Estimated Resale Value
-        </h2>
-        <p className="text-white/60 text-lg max-w-xl">
-          Based on your selected device condition and current market rates.
-        </p>
-      </div>
+        {/* LEFT SECTION */}
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
 
-      {/* MAIN CONTENT */}
-      <div className="grid lg:grid-cols-[1fr_340px] gap-8">
-        {/* LEFT SIDE - DETAILS */}
-        <div className="space-y-6">
-          {/* Selected Device */}
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8">
-            <div className="flex items-start justify-between">
-              <div>
-                <p className="text-white/40 text-sm uppercase tracking-widest mb-2">
-                  SELECTED DEVICE
+          {/* DEVICE INFO */}
+          <div className="flex flex-col sm:flex-row gap-5 mb-8">
+            <div className="w-24 h-24 bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-3xl flex items-center justify-center flex-shrink-0">
+              <span className="text-5xl">📱</span>
+            </div>
+
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                {selectedModel}
+              </h2>
+
+              <p className="text-gray-500 mt-1 text-lg">
+                {selectedBrand}
+              </p>
+
+              <div className="mt-5">
+                <p className="text-sm text-gray-500">
+                  Estimated Offer
                 </p>
-                <h3 className="text-4xl font-light text-white mb-1">{selectedModel}</h3>
-                <p className="text-xl" style={{ color: category.accent }}>
-                  {selectedBrand}
+
+                <p className="text-4xl font-bold text-emerald-600 mt-1">
+                  ₹{finalPrice.toLocaleString()}
                 </p>
-              </div>
-              <div
-                className="w-16 h-16 rounded-3xl flex items-center justify-center"
-                style={{ background: `${category.accent}20` }}
-              >
-                <Sparkles size={32} style={{ color: category.accent }} />
               </div>
             </div>
           </div>
 
-          {/* Condition Summary */}
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8">
+          {/* CONDITION SUMMARY */}
+          <div>
             <div className="flex items-center gap-3 mb-6">
-              <ShieldCheck size={26} style={{ color: category.accent }} />
-              <h3 className="text-2xl font-light text-white">Condition Summary</h3>
+              <ShieldCheck
+                size={24}
+                className="text-emerald-600"
+              />
+
+              <h3 className="text-xl font-semibold text-gray-900">
+                Device Condition
+              </h3>
             </div>
 
             <div className="space-y-4">
-              {Object.entries(selectedCondition).map(([key, value], idx) => (
+              {Object.entries(selectedCondition).map(([key, value]) => (
                 <div
-                  key={idx}
-                  className="flex items-center justify-between rounded-2xl bg-white/[0.04] border border-white/10 px-6 py-5"
+                  key={key}
+                  className="flex items-center justify-between bg-gray-50 rounded-2xl px-5 py-4 border border-gray-100"
                 >
                   <div>
-                    <p className="text-white/40 text-sm uppercase tracking-widest">
-                      {key}
+                    <p className="text-xs uppercase tracking-wide text-gray-400">
+                      {key.replace(/([A-Z])/g, " $1")}
                     </p>
-                    <p className="text-white text-lg font-medium">{value}</p>
+
+                    <p className="font-medium text-gray-900 mt-1">
+                      {value}
+                    </p>
                   </div>
-                  <CheckCircle2 size={26} style={{ color: category.accent }} />
+
+                  <CheckCircle2
+                    size={24}
+                    className="text-emerald-500"
+                  />
                 </div>
               ))}
             </div>
-          </div>
 
-          {/* Price Breakdown */}
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8">
-            <h3 className="text-2xl font-light text-white mb-8">Price Breakdown</h3>
+            {/* PRICE BREAKDOWN */}
+            {deductions.total > 0 && (
+              <div className="mt-8 border-t border-gray-100 pt-6">
+                <h4 className="font-semibold text-gray-900 mb-4">
+                  Price Breakdown
+                </h4>
 
-            <div className="space-y-6">
-              <div className="flex justify-between text-lg">
-                <span className="text-white/70">Base Market Price</span>
-                <span className="text-white">₹{basePrice.toLocaleString()}</span>
-              </div>
+                <div className="space-y-3">
+                  <div className="flex justify-between text-gray-600">
+                    <span>Base Price</span>
+                    <span>₹{basePrice.toLocaleString()}</span>
+                  </div>
 
-              {deductions.breakdown.map((item, idx) => (
-                <div key={idx} className="flex justify-between">
-                  <span className="text-white/60">
-                    {item.key} — {item.value}
-                  </span>
-                  <span className="text-red-400">- ₹{item.deduction.toLocaleString()}</span>
+                  <div className="flex justify-between text-red-500">
+                    <span>Total Deductions</span>
+                    <span>
+                      -₹{deductions.total.toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="border-t border-gray-200 pt-3 flex justify-between font-bold text-lg text-gray-900">
+                    <span>Final Offer</span>
+                    <span className="text-emerald-600">
+                      ₹{finalPrice.toLocaleString()}
+                    </span>
+                  </div>
                 </div>
-              ))}
-
-              <div className="h-px bg-white/10 my-4" />
-
-              <div className="flex justify-between items-end pt-2">
-                <span className="text-xl text-white">Final Offer</span>
-                <span
-                  className="text-5xl font-light tracking-tighter"
-                  style={{ color: category.accent }}
-                >
-                  ₹{finalPrice.toLocaleString()}
-                </span>
               </div>
-            </div>
+            )}
           </div>
         </div>
 
-        {/* RIGHT SIDE - FINAL OFFER CARD */}
-        <div>
-          <div className="sticky top-28 rounded-[36px] border border-white/10 bg-[#0D172A]/90 backdrop-blur-2xl overflow-hidden shadow-[0_20px_100px_rgba(0,0,0,0.4)]">
-            {/* Hero Image */}
-            <div className="relative h-[260px] overflow-hidden">
-              <img
-                src={category.heroImage}
-                alt={category.title}
-                className="w-full h-full object-cover"
+        {/* RIGHT SECTION */}
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 h-fit sticky top-8">
+
+          <div className="text-center">
+            <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 px-4 py-2 rounded-full text-sm font-medium mb-5">
+              <BadgeCheck size={16} />
+              Instant Quote Generated
+            </div>
+
+            <h3 className="text-2xl font-bold text-gray-900">
+              Your Final Offer
+            </h3>
+
+            <p className="text-gray-500 mt-2">
+              Based on your device condition
+            </p>
+
+            <div className="my-8">
+              <p className="text-sm text-gray-500 mb-2">
+                Estimated Resale Value
+              </p>
+
+              <p className="text-6xl font-bold text-emerald-600">
+                ₹{finalPrice.toLocaleString()}
+              </p>
+            </div>
+          </div>
+
+          {/* CTA */}
+         
+   <button
+  onClick={() =>
+    navigate("/sell/pickup", {
+      state: {
+        product: {
+          brand: selectedBrand,
+          model: selectedModel,
+          estimatedPrice: finalPrice,
+          condition: selectedCondition,
+        },
+      },
+    })
+  }
+  className="
+    w-full
+    h-14
+    bg-emerald-600
+    hover:bg-emerald-700
+    rounded-2xl
+    text-white
+    font-semibold
+    transition-all
+    flex
+    items-center
+    justify-center
+    gap-3
+    shadow-lg
+    shadow-emerald-100
+  "
+>
+  Sell Now
+  <ArrowRight size={20} />
+</button>
+    
+
+          {/* HIGHLIGHTED NOTICE */}
+          <div className="mt-6 flex items-start gap-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-4">
+            <div className="w-9 h-9 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+              <ShieldCheck
+                size={18}
+                className="text-amber-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#040B1A] to-transparent" />
             </div>
 
-            {/* Offer Content */}
-            <div className="p-9">
-              <p className="text-sm uppercase tracking-[0.3em] text-white/40 mb-2">
-                FINAL ESTIMATED OFFER
+            <div>
+              <p className="text-sm font-semibold text-gray-900">
+                Inspection Required
               </p>
 
-              <h2
-                className="text-6xl font-light tracking-[-0.06em] mb-8"
-                style={{ color: category.accent }}
-              >
-                ₹{estimatedPrice.toLocaleString()}
-              </h2>
-
-              <p className="text-white/70 leading-relaxed mb-10">
-                This is an instant estimated value based on your inputs and current market trends.
+              <p className="text-sm text-gray-600 mt-1 leading-relaxed">
+                Final value will be confirmed after physical
+                inspection of the device.
               </p>
-
-              {/* Trust Points */}
-              <div className="space-y-4 mb-10">
-                {[
-                  "Free Doorstep Pickup",
-                  "Instant UPI / Bank Payment",
-                  "Secure Device Verification",
-                  "No Hidden Charges",
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-3 text-white/80">
-                    <div
-                      className="w-2 h-2 rounded-full"
-                      style={{ background: category.accent }}
-                    />
-                    <span>{item}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* CTA Button */}
-              <button
-                className="w-full h-14 rounded-2xl font-semibold text-lg flex items-center justify-center gap-3 hover:scale-[1.02] transition-all"
-                style={{ background: category.accent, color: "#040B1A" }}
-              >
-                Schedule Free Pickup
-                <ArrowRight size={22} />
-              </button>
             </div>
           </div>
+
+          {/* TRUST FEATURES */}
+          <div className="grid grid-cols-3 gap-4 mt-8 pt-8 border-t border-gray-100">
+
+            <div className="text-center">
+              <div className="w-12 h-12 mx-auto rounded-2xl bg-emerald-50 flex items-center justify-center mb-3">
+                <Lock
+                  size={20}
+                  className="text-emerald-600"
+                />
+              </div>
+
+              <p className="text-sm font-medium text-gray-800">
+                Secure
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-12 h-12 mx-auto rounded-2xl bg-emerald-50 flex items-center justify-center mb-3">
+                <Truck
+                  size={20}
+                  className="text-emerald-600"
+                />
+              </div>
+
+              <p className="text-sm font-medium text-gray-800">
+                Free Pickup
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="w-12 h-12 mx-auto rounded-2xl bg-emerald-50 flex items-center justify-center mb-3">
+                <CreditCard
+                  size={20}
+                  className="text-emerald-600"
+                />
+              </div>
+
+              <p className="text-sm font-medium text-gray-800">
+                Instant Pay
+              </p>
+            </div>
+
+          </div>
         </div>
+
       </div>
     </div>
   );

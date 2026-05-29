@@ -1,25 +1,35 @@
-import React, { useState } from "react";
 
+import React, { useState } from "react";
 import {
   PackageOpen,
- 
   ShoppingBag,
   BadgeIndianRupee,
 } from "lucide-react";
 
-import { Link } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
 
 import { useUserStore } from "../../store/useUserStore";
 import AccountSidebar from "../../components/account/AccountSidebar";
-const MyOrdersPage = () => {
-  const { user, orders } = useUserStore();
 
-  // BUY / SELL TAB
+const MyOrdersPage = () => {
+  const navigate = useNavigate();
+
+  const { orders } = useUserStore();
+
+  const buyOrders = orders.filter(
+    (item) => item.type === "buy"
+  );
+
+  const sellOrders = orders.filter(
+    (item) => item.type === "sell"
+  );
+
   const [activeTab, setActiveTab] =
     useState("buy");
 
-  // SIDEBAR MENU
-  
   return (
     <div className="min-h-screen bg-[#F7F9FC]">
 
@@ -27,10 +37,8 @@ const MyOrdersPage = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-8">
 
-          {/* LEFT SIDEBAR */}
-         <AccountSidebar />
+          <AccountSidebar />
 
-          {/* RIGHT SECTION */}
           <div>
 
             {/* HEADER */}
@@ -42,28 +50,24 @@ const MyOrdersPage = () => {
                 </h1>
 
                 <p className="mt-2 text-[#6E7C96]">
-                  Manage products you purchased or
-                  sold on Rupantar
+                  Manage products you purchased or sold on Rupantar
                 </p>
               </div>
 
-              {/* CTA BUTTON */}
               <Link
                 to="/discover"
                 className="hidden md:flex h-12 px-7 rounded-full bg-[#00B67A] text-white text-sm font-bold items-center justify-center hover:opacity-90 transition-all"
               >
                 Browse Products
               </Link>
+
             </div>
 
-            {/* BUY / SELL TABS */}
+            {/* TABS */}
             <div className="flex items-center gap-4 mb-8">
 
-              {/* BUY TAB */}
               <button
-                onClick={() =>
-                  setActiveTab("buy")
-                }
+                onClick={() => setActiveTab("buy")}
                 className={`h-12 px-6 rounded-full text-sm font-bold transition-all flex items-center gap-2 ${
                   activeTab === "buy"
                     ? "bg-[#00B67A] text-white shadow-lg shadow-[#00B67A]/20"
@@ -71,15 +75,11 @@ const MyOrdersPage = () => {
                 }`}
               >
                 <ShoppingBag size={18} />
-
                 Buy Orders
               </button>
 
-              {/* SELL TAB */}
               <button
-                onClick={() =>
-                  setActiveTab("sell")
-                }
+                onClick={() => setActiveTab("sell")}
                 className={`h-12 px-6 rounded-full text-sm font-bold transition-all flex items-center gap-2 ${
                   activeTab === "sell"
                     ? "bg-[#FFB800] text-[#020B2D] shadow-lg shadow-[#FFB800]/20"
@@ -87,16 +87,17 @@ const MyOrdersPage = () => {
                 }`}
               >
                 <BadgeIndianRupee size={18} />
-
                 Sell Orders
               </button>
+
             </div>
 
-            {/* EMPTY STATE */}
-            {orders.length === 0 ? (
+            {(activeTab === "buy"
+              ? buyOrders.length === 0
+              : sellOrders.length === 0) ? (
+
               <div className="bg-white rounded-[36px] border border-[#E5EEF8] min-h-[560px] flex flex-col items-center justify-center text-center px-6 shadow-sm">
 
-                {/* ICON */}
                 <div
                   className={`w-32 h-32 rounded-full flex items-center justify-center ${
                     activeTab === "buy"
@@ -114,21 +115,18 @@ const MyOrdersPage = () => {
                   />
                 </div>
 
-                {/* TITLE */}
                 <h2 className="mt-8 text-[36px] leading-tight font-black text-[#020B2D]">
                   {activeTab === "buy"
                     ? "No Purchase Orders Yet"
                     : "No Sell Orders Yet"}
                 </h2>
 
-                {/* DESCRIPTION */}
                 <p className="mt-4 max-w-2xl text-[#6E7C96] leading-8 text-[17px]">
                   {activeTab === "buy"
-                    ? "Explore premium refurbished furniture, electronics, laptops and office assets from trusted verified sellers across India."
-                    : "Turn your unused furniture, electronics and office assets into earnings by selling directly through Rupantar."}
+                    ? "Explore premium refurbished furniture, electronics, laptops and office assets."
+                    : "Turn your unused assets into earnings through Rupantar."}
                 </p>
 
-                {/* BUTTON */}
                 <Link
                   to={
                     activeTab === "buy"
@@ -137,25 +135,172 @@ const MyOrdersPage = () => {
                   }
                   className={`mt-9 h-12 px-8 rounded-full text-sm font-bold flex items-center justify-center transition-all ${
                     activeTab === "buy"
-                      ? "bg-[#020B2D] text-white hover:opacity-95"
-                      : "bg-[#FFB800] text-[#020B2D] hover:opacity-90"
+                      ? "bg-[#020B2D] text-white"
+                      : "bg-[#FFB800] text-[#020B2D]"
                   }`}
                 >
                   {activeTab === "buy"
                     ? "Browse Collection"
                     : "Sell Your Product"}
                 </Link>
+
               </div>
+
             ) : (
-              <div>
-                {/* ORDER CARDS HERE */}
+
+              <div className="space-y-5">
+
+                {(activeTab === "buy"
+                  ? buyOrders
+                  : sellOrders
+                ).map((order) => (
+
+                  <div
+                    key={order.id}
+                    onClick={() =>
+                      navigate(
+                        `/account/orders/${order.id}`
+                      )
+                    }
+                    className="
+                      bg-white
+                      border
+                      border-[#E5EEF8]
+                      rounded-[28px]
+                      p-6
+                      shadow-sm
+                      cursor-pointer
+                      hover:shadow-lg
+                      hover:-translate-y-1
+                      transition-all
+                    "
+                  >
+
+                    <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5">
+
+                      <div className="flex items-center gap-4">
+
+                        <div className="w-16 h-16 rounded-2xl bg-[#00B67A]/10 flex items-center justify-center">
+                          <BadgeIndianRupee
+                            size={28}
+                            className="text-[#00B67A]"
+                          />
+                        </div>
+
+                        <div>
+                          <h3 className="text-2xl font-bold text-[#020B2D]">
+                            {order.productName}
+                          </h3>
+
+                          <p className="text-sm text-[#6E7C96] mt-1">
+                            Request ID: {order.id}
+                          </p>
+                        </div>
+
+                      </div>
+
+                      <div
+                        className={`px-4 py-2 rounded-full text-sm font-semibold ${
+                          order.status === "Completed"
+                            ? "bg-green-100 text-green-700"
+                            : order.status === "Cancelled"
+                            ? "bg-red-100 text-red-700"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
+                      >
+                        {order.status}
+                      </div>
+
+                    </div>
+
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+
+                      <div>
+                        <p className="text-xs text-[#6E7C96] uppercase tracking-wide">
+                          Offer Value
+                        </p>
+
+                        <p className="text-2xl font-black text-[#00B67A] mt-1">
+                          ₹{order.amount || 0}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-xs text-[#6E7C96] uppercase tracking-wide">
+                          Pickup Date
+                        </p>
+
+                        <p className="font-semibold mt-1">
+                          {order.pickupDate}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-xs text-[#6E7C96] uppercase tracking-wide">
+                          Time Slot
+                        </p>
+
+                        <p className="font-semibold mt-1">
+                          {order.pickupSlot}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-xs text-[#6E7C96] uppercase tracking-wide">
+                          Payment
+                        </p>
+
+                        <p className="font-semibold capitalize mt-1">
+                          {order.paymentMethod}
+                        </p>
+                      </div>
+
+                    </div>
+
+                    <div className="mt-6 pt-5 border-t border-[#EEF2F6] flex items-center justify-between">
+
+                      <span className="text-sm text-[#6E7C96]">
+                        Request Created
+                      </span>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/account/orders/${order.id}`);
+                        }}
+                        className="
+                          h-11
+                          px-5
+                          rounded-xl
+                          bg-[#00B67A]
+                          text-white
+                          font-semibold
+                          hover:bg-[#009966]
+                          transition-all
+                        "
+                      >
+                        View Details
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                ))}
+
               </div>
+
             )}
+
           </div>
+
         </div>
+
       </div>
+
     </div>
   );
 };
 
 export default MyOrdersPage;
+
