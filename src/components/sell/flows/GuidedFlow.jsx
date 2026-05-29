@@ -347,9 +347,7 @@ const convertToBase64 = (file) =>
         Asset Information
       </p>
 
-      <h2 className="text-4xl font-light tracking-[-0.05em] text-white mb-4">
-        Tell Us About Your Asset
-      </h2>
+      
 
       <p className="text-white/60 text-lg max-w-2xl">
         Provide a few details so our team can
@@ -365,7 +363,7 @@ const convertToBase64 = (file) =>
       <div className="md:col-span-2">
 
         <label className="block text-white/70 mb-3">
-          Product Title *
+          Asset Title *
         </label>
 
         <input
@@ -376,7 +374,9 @@ const convertToBase64 = (file) =>
               title: e.target.value,
             })
           }
-          placeholder="Godrej Ergonomic Office Chair"
+          placeholder="e.g. iPhone 13, Dell Latitude 5420,
+LG Split AC, Godrej Office Chair,
+3 Seater Sofa"
           className="
             w-full
             h-14
@@ -397,7 +397,7 @@ const convertToBase64 = (file) =>
       <div>
 
         <label className="block text-white/70 mb-3">
-          Brand
+          Brand/Manufacturer
         </label>
 
         <input
@@ -423,38 +423,39 @@ const convertToBase64 = (file) =>
         />
 
       </div>
+{/* ADDITIONAL DETAILS */}
 
-      {/* AGE */}
+<div>
 
-      <div>
+  <label className="block text-white/70 mb-3">
+    Additional Details
+  </label>
 
-        <label className="block text-white/70 mb-3">
-          Age
-        </label>
+  <input
+    type="text"
+    value={guidedDetails.details}
+    onChange={(e) =>
+      setGuidedDetails({
+        details: e.target.value,
+      })
+    }
+    placeholder="128GB Blue, 1.5 Ton Inverter, 3 Seater Brown Sofa, i5 8th Gen"
+    className="
+      w-full
+      h-14
+      rounded-2xl
+      bg-white/5
+      border
+      border-white/10
+      px-5
+      text-white
+      outline-none
+    "
+  />
 
-        <input
-          type="text"
-          value={guidedDetails.age}
-          onChange={(e) =>
-            setGuidedDetails({
-              age: e.target.value,
-            })
-          }
-          placeholder="2 Years"
-          className="
-            w-full
-            h-14
-            rounded-2xl
-            bg-white/5
-            border
-            border-white/10
-            px-5
-            text-white
-            outline-none
-          "
-        />
+</div>
 
-      </div>
+      
 
     </div>
 
@@ -473,6 +474,7 @@ const convertToBase64 = (file) =>
           "Good",
           "Fair",
           "Poor",
+          "Needs Repair"
         ].map((item) => (
 
           <button
@@ -697,7 +699,7 @@ const convertToBase64 = (file) =>
       <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
 
         <p className="text-white/40 text-sm mb-2">
-          Product Title
+          Asset Title
         </p>
 
         <h3 className="text-white text-xl">
@@ -720,13 +722,13 @@ const convertToBase64 = (file) =>
 
       <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
 
-        <p className="text-white/40 text-sm mb-2">
-          Age
-        </p>
+       <p className="text-white/40 text-sm mb-2">
+  Additional Details
+</p>
 
-        <h3 className="text-white text-xl">
-          {guidedDetails.age || "-"}
-        </h3>
+<h3 className="text-white text-xl">
+  {guidedDetails.details || "-"}
+</h3>
 
       </div>
 
@@ -922,8 +924,9 @@ const convertToBase64 = (file) =>
             </h2>
 
             <p className="text-white/60 leading-relaxed mb-8">
-              Submit your asset details and receive
-              a professional valuation from our team.
+              Submit your asset details and images.
+Our team will review your request and
+share the best possible offer.
             </p>
 
             <div className="space-y-4 mb-8">

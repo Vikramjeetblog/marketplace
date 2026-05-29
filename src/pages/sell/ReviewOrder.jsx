@@ -1,27 +1,52 @@
 import React, { useState } from "react";
+
 import {
-  Smartphone,
-  MapPin,
-  Calendar,
-  Clock,
-  Wallet,
+  PackageCheck,
   ShieldCheck,
   CheckCircle2,
 } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
+
+import {
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+
 import { useUserStore } from "../../store/useUserStore";
+
 const ReviewOrder = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const product = location.state?.product || {};
-  const pickup = location.state?.pickup || {};
-  const paymentMethod =
-    location.state?.paymentMethod || "UPI";
-    const { addOrder } = useUserStore();
+  const product =
+    location.state?.product || {};
+
+  const { addOrder } = useUserStore();
 
   const [accepted, setAccepted] =
     useState(false);
+
+  // UNIVERSAL PRODUCT NAME
+  const productName =
+    product.title ||
+    product.productName ||
+    product.model ||
+    product.name ||
+    "Asset";
+
+  // UNIVERSAL PRICE
+  const productPrice =
+    product.expectedPrice ||
+    product.estimatedPrice ||
+    product.price ||
+    0;
+
+  // UNIVERSAL CATEGORY
+  const productCategory =
+    product.category || "General";
+
+  // UNIVERSAL BRAND
+  const productBrand =
+    product.brand || null;
 
   return (
     <div className="min-h-screen bg-[#F7F9FC]">
@@ -29,188 +54,183 @@ const ReviewOrder = () => {
 
         {/* HEADER */}
         <div className="mb-8">
+
           <h1 className="text-[36px] font-black text-[#020B2D]">
-            Review Order
+            Review Request
           </h1>
 
           <p className="mt-2 text-[#6E7C96]">
-            Please verify your details before
-            confirming the pickup.
+            Please verify your asset details before
+            submitting your request.
           </p>
+
         </div>
 
-        {/* STEPPER */}
-        <div className="bg-white rounded-[24px] border border-[#E5EEF8] p-5 mb-8">
-          <div className="flex items-center justify-between">
-
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#00B67A] text-white flex items-center justify-center">
-                ✓
-              </div>
-              <span>Quote</span>
-            </div>
-
-            <div className="flex-1 h-[2px] bg-[#00B67A] mx-3" />
-
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#00B67A] text-white flex items-center justify-center">
-                ✓
-              </div>
-              <span>Pickup</span>
-            </div>
-
-            <div className="flex-1 h-[2px] bg-[#00B67A] mx-3" />
-
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#00B67A] text-white flex items-center justify-center">
-                ✓
-              </div>
-              <span>Payment</span>
-            </div>
-
-            <div className="flex-1 h-[2px] bg-[#E5EEF8] mx-3" />
-
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-[#00B67A] text-white flex items-center justify-center">
-                4
-              </div>
-              <span className="font-semibold">
-                Confirm
-              </span>
-            </div>
-
-          </div>
-        </div>
+       
+        
 
         <div className="grid lg:grid-cols-[1fr_360px] gap-8">
 
           {/* LEFT */}
           <div className="space-y-6">
 
-            {/* DEVICE */}
+            {/* ASSET DETAILS */}
             <div className="bg-white rounded-[30px] border border-[#E5EEF8] p-6">
+
               <div className="flex items-center gap-4 mb-5">
-                <Smartphone
+
+                <PackageCheck
                   className="text-[#00B67A]"
                   size={22}
                 />
+
                 <h2 className="text-[22px] font-bold text-[#020B2D]">
-                  Device Details
+                  Asset Details
                 </h2>
+
               </div>
 
+              {/* PRODUCT NAME */}
               <div>
-                <p className="font-semibold text-lg">
-                  {product.model}
+
+                <p className="font-semibold text-lg text-[#020B2D]">
+                  {productName}
                 </p>
 
-                <p className="text-[#6E7C96]">
-                  {product.brand}
+                {productBrand && (
+  <p className="text-[#6E7C96]">
+    {productBrand}
+  </p>
+)}
+
+              </div>
+
+              {/* CATEGORY */}
+              <div className="mt-6">
+
+                <p className="text-sm text-[#6E7C96]">
+                  Category
                 </p>
-              </div>
-            </div>
 
-            {/* ADDRESS */}
-            <div className="bg-white rounded-[30px] border border-[#E5EEF8] p-6">
-              <div className="flex items-center gap-4 mb-5">
-                <MapPin
-                  className="text-[#00B67A]"
-                  size={22}
-                />
-                <h2 className="text-[22px] font-bold text-[#020B2D]">
-                  Pickup Address
-                </h2>
+                <p className="mt-1 font-medium text-[#020B2D]">
+                  {productCategory}
+                </p>
+
               </div>
 
-              <p className="font-semibold">
-                {pickup.address?.type}
-              </p>
+              {/* CONDITION */}
+              {product.condition && (
+                <div className="mt-6">
 
-              <p className="mt-2">
-                {pickup.address?.address}
-              </p>
+                  <p className="text-sm text-[#6E7C96]">
+                    Condition
+                  </p>
 
-              <p className="text-[#6E7C96]">
-                {pickup.address?.pincode}
-              </p>
+                  <p className="mt-1 font-medium text-[#020B2D]">
+                    {product.condition}
+                  </p>
 
-              <p className="mt-2">
-                +91 {pickup.address?.phone}
-              </p>
-            </div>
-
-            {/* PICKUP */}
-            <div className="bg-white rounded-[30px] border border-[#E5EEF8] p-6">
-
-              <div className="flex items-center gap-4 mb-5">
-                <Calendar
-                  className="text-[#00B67A]"
-                  size={22}
-                />
-
-                <h2 className="text-[22px] font-bold text-[#020B2D]">
-                  Pickup Schedule
-                </h2>
-              </div>
-
-              <div className="space-y-3">
-
-                <div className="flex justify-between">
-                  <span>Date</span>
-                  <span>{pickup.date}</span>
                 </div>
+              )}
 
-                <div className="flex justify-between">
-                  <span>Time Slot</span>
-                  <span>{pickup.slot}</span>
+              {/* DETAILS */}
+              {product.details && (
+                <div className="mt-6">
+
+                  <p className="text-sm text-[#6E7C96]">
+                    Additional Details
+                  </p>
+
+                  <p className="mt-1 text-[#020B2D] leading-7">
+                    {product.details}
+                  </p>
+
                 </div>
+              )}
 
-              </div>
+              {/* DESCRIPTION */}
+              {product.description && (
+                <div className="mt-6">
 
-            </div>
+                  <p className="text-sm text-[#6E7C96]">
+                    Description
+                  </p>
 
-            {/* PAYMENT */}
-            <div className="bg-white rounded-[30px] border border-[#E5EEF8] p-6">
+                  <p className="mt-1 text-[#020B2D] leading-7">
+                    {product.description}
+                  </p>
 
-              <div className="flex items-center gap-4 mb-5">
-                <Wallet
-                  className="text-[#00B67A]"
-                  size={22}
-                />
+                </div>
+              )}
 
-                <h2 className="text-[22px] font-bold text-[#020B2D]">
-                  Payment Method
-                </h2>
-              </div>
+              {/* IMAGES */}
+              {product.images &&
+                product.images.length > 0 && (
+                  <div className="mt-8">
 
-              <p className="font-semibold capitalize">
-                {paymentMethod}
-              </p>
+                    <p className="text-sm text-[#6E7C96] mb-4">
+                      Uploaded Images
+                    </p>
+
+                    <div className="grid grid-cols-2 gap-4">
+
+                      {product.images.map(
+                        (image, index) => (
+                          <img
+                            key={index}
+                            src={image}
+                            alt={`Asset ${index + 1}`}
+                            className="
+                              h-40
+                              w-full
+                              object-cover
+                              rounded-2xl
+                              border
+                              border-[#E5EEF8]
+                            "
+                          />
+                        )
+                      )}
+
+                    </div>
+
+                  </div>
+                )}
+
             </div>
 
             {/* NOTICE */}
             <div className="bg-amber-50 border border-amber-200 rounded-[24px] p-5">
+
               <div className="flex gap-3">
+
                 <ShieldCheck
                   className="text-amber-700"
                   size={20}
                 />
 
                 <div>
+
                   <p className="font-semibold text-amber-900">
-                    Inspection Required
+                    Request Under Review
                   </p>
 
-                  <p className="text-sm text-amber-800 mt-1">
-                    Final value may vary after
-                    physical inspection.
+                  <p className="text-sm text-amber-800 mt-1 leading-6">
+                    Our  team will review your
+                    submitted details and uploaded images.
+                    An offer will be shared after
+                    evaluation.
                   </p>
+
                 </div>
+
               </div>
+
             </div>
 
             {/* TERMS */}
             <label className="flex items-center gap-3 cursor-pointer">
+
               <input
                 type="checkbox"
                 checked={accepted}
@@ -219,10 +239,10 @@ const ReviewOrder = () => {
                 }
               />
 
-              <span>
-                I agree to the Terms &
-                Conditions.
+              <span className="text-[#020B2D]">
+                I agree to the Terms & Conditions.
               </span>
+
             </label>
 
           </div>
@@ -235,88 +255,103 @@ const ReviewOrder = () => {
               <div className="text-center">
 
                 <div className="w-20 h-20 mx-auto rounded-2xl bg-[#00B67A]/10 flex items-center justify-center">
+
                   <CheckCircle2
                     className="text-[#00B67A]"
                     size={40}
                   />
+
                 </div>
 
-                <h3 className="text-xl font-bold mt-4">
-                  Ready to Confirm
+                <h3 className="text-xl font-bold mt-4 text-[#020B2D]">
+                  Ready to Submit
                 </h3>
 
                 <p className="text-[#6E7C96] mt-2">
-                  Your pickup request is ready.
+                  Your asset review request is ready.
                 </p>
 
+                {/* PRICE */}
                 <div className="mt-8">
+
                   <p className="text-sm text-[#6E7C96]">
-                    Estimated Offer
+                    Expected Price
                   </p>
 
                   <p className="text-[42px] font-black text-[#00B67A]">
-                    ₹
-                    {product.estimatedPrice?.toLocaleString() ||
-                      0}
+                    ₹{productPrice.toLocaleString()}
                   </p>
+
                 </div>
 
+                {/* SUBMIT BUTTON */}
                 <button
-  disabled={!accepted}
-  onClick={() => {
-    const orderId =
-      "RP" +
-      Math.floor(
-        100000 + Math.random() * 900000
-      );
+                  disabled={!accepted}
+                  onClick={() => {
+                    const orderId =
+                      "RP" +
+                      Math.floor(
+                        100000 +
+                          Math.random() * 900000
+                      );
 
-    addOrder({
-      id: orderId,
+                    addOrder({
+                      id: orderId,
 
-      type: "sell",
+                      type: "sell",
 
-      productName: product.model,
+                      title: productName,
 
-      brand: product.brand,
+                      category:
+                        productCategory,
 
-      amount: product.estimatedPrice,
+                      brand: productBrand,
 
-      status: "Pickup Scheduled",
+                      details:
+                        product.details,
 
-      paymentMethod,
+                      condition:
+                        product.condition,
 
-      pickupDate: pickup.date,
+                      description:
+                        product.description,
 
-      pickupSlot: pickup.slot,
+                      amount:
+                        productPrice,
 
-      address: pickup.address,
+                      images:
+                        product.images || [],
 
-      createdAt: Date.now(),
-    });
+                      status:
+                        "Pending Review",
 
-    navigate("/sell/success", {
-      state: {
-        product,
-        pickup,
-        paymentMethod,
-        orderId,
-      },
-    });
-  }}
-  className="
-    mt-6
-    w-full
-    h-14
-    rounded-2xl
-    bg-[#00B67A]
-    text-white
-    font-bold
-    disabled:opacity-50
-    disabled:cursor-not-allowed
-  "
->
-  Confirm Pickup
-</button>
+                      createdAt:
+                        Date.now(),
+                    });
+
+                    navigate("/sell/success", {
+                      state: {
+                        product,
+                        orderId,
+                      },
+                    });
+                  }}
+                  className="
+                    mt-6
+                    w-full
+                    h-14
+                    rounded-2xl
+                    bg-[#00B67A]
+                    text-white
+                    font-bold
+                    disabled:opacity-50
+                    disabled:cursor-not-allowed
+                    hover:opacity-90
+                    transition-all
+                  "
+                >
+                  Submit Request
+                </button>
 
               </div>
 

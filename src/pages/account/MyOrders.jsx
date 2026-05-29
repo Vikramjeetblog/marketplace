@@ -23,9 +23,9 @@ const MyOrdersPage = () => {
     (item) => item.type === "buy"
   );
 
-  const sellOrders = orders.filter(
-    (item) => item.type === "sell"
-  );
+  const sellOrders = [...orders]
+  .filter((item) => item.type === "sell")
+  .reverse();
 
   const [activeTab, setActiveTab] =
     useState("buy");
@@ -50,7 +50,7 @@ const MyOrdersPage = () => {
                 </h1>
 
                 <p className="mt-2 text-[#6E7C96]">
-                  Manage products you purchased or sold on Rupantar
+                  Manage assets you purchased or sold on Rupantar
                 </p>
               </div>
 
@@ -58,7 +58,7 @@ const MyOrdersPage = () => {
                 to="/discover"
                 className="hidden md:flex h-12 px-7 rounded-full bg-[#00B67A] text-white text-sm font-bold items-center justify-center hover:opacity-90 transition-all"
               >
-                Browse Products
+                Browse Collection
               </Link>
 
             </div>
@@ -124,7 +124,7 @@ const MyOrdersPage = () => {
                 <p className="mt-4 max-w-2xl text-[#6E7C96] leading-8 text-[17px]">
                   {activeTab === "buy"
                     ? "Explore premium refurbished furniture, electronics, laptops and office assets."
-                    : "Turn your unused assets into earnings through Rupantar."}
+                    : "Sell furniture, electronics, office equipment and other assets through Rupantar."}
                 </p>
 
                 <Link
@@ -141,7 +141,7 @@ const MyOrdersPage = () => {
                 >
                   {activeTab === "buy"
                     ? "Browse Collection"
-                    : "Sell Your Product"}
+                    : "Sell Your Asset"}
                 </Link>
 
               </div>
@@ -189,8 +189,16 @@ const MyOrdersPage = () => {
 
                         <div>
                           <h3 className="text-2xl font-bold text-[#020B2D]">
-                            {order.productName}
+                            {
+  order.title ||
+  order.productName ||
+  order.model ||
+  "Asset"
+}
                           </h3>
+                          <p className="text-sm text-[#6E7C96] mt-1">
+  {order.category || "General Asset"}
+</p>
 
                           <p className="text-sm text-[#6E7C96] mt-1">
                             Request ID: {order.id}
@@ -212,50 +220,49 @@ const MyOrdersPage = () => {
                       </div>
 
                     </div>
+<div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
 
-                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+  <div>
+    <p className="text-xs text-[#6E7C96] uppercase tracking-wide">
+      Expected Price
+    </p>
 
-                      <div>
-                        <p className="text-xs text-[#6E7C96] uppercase tracking-wide">
-                          Offer Value
-                        </p>
+    <p className="text-2xl font-black text-[#00B67A] mt-1">
+    ₹{Number(order.amount || 0).toLocaleString("en-IN")}
+    </p>
+  </div>
 
-                        <p className="text-2xl font-black text-[#00B67A] mt-1">
-                          ₹{order.amount || 0}
-                        </p>
-                      </div>
+  <div>
+    <p className="text-xs text-[#6E7C96] uppercase tracking-wide">
+      Category
+    </p>
 
-                      <div>
-                        <p className="text-xs text-[#6E7C96] uppercase tracking-wide">
-                          Pickup Date
-                        </p>
+    <p className="font-semibold mt-1">
+      {order.category || "General Asset"}
+    </p>
+  </div>
 
-                        <p className="font-semibold mt-1">
-                          {order.pickupDate}
-                        </p>
-                      </div>
+  <div>
+    <p className="text-xs text-[#6E7C96] uppercase tracking-wide">
+      Status
+    </p>
 
-                      <div>
-                        <p className="text-xs text-[#6E7C96] uppercase tracking-wide">
-                          Time Slot
-                        </p>
+    <p className="font-semibold mt-1">
+      {order.status}
+    </p>
+  </div>
 
-                        <p className="font-semibold mt-1">
-                          {order.pickupSlot}
-                        </p>
-                      </div>
+  <div>
+    <p className="text-xs text-[#6E7C96] uppercase tracking-wide">
+      Request ID
+    </p>
 
-                      <div>
-                        <p className="text-xs text-[#6E7C96] uppercase tracking-wide">
-                          Payment
-                        </p>
+    <p className="font-semibold mt-1">
+      {order.id}
+    </p>
+  </div>
 
-                        <p className="font-semibold capitalize mt-1">
-                          {order.paymentMethod}
-                        </p>
-                      </div>
-
-                    </div>
+</div>
 
                     <div className="mt-6 pt-5 border-t border-[#EEF2F6] flex items-center justify-between">
 

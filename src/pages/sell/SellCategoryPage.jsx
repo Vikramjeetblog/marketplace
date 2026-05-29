@@ -3,10 +3,8 @@ import { useParams } from "react-router-dom";
 import sellCategories from "../../data/sellCategories";
 import useSellStore from "../../store/useSellStore";
 
-// Dynamic Flows
-import StructuredFlow from "../../components/sell/flows/StructuredFlow";
 import GuidedFlow from "../../components/sell/flows/GuidedFlow";
-import EnterpriseFlow from "../../components/sell/flows/EnterpriseFlow";
+
 
 const SellCategoryPage = () => {
   const { categoryId } = useParams();
@@ -37,18 +35,7 @@ const SellCategoryPage = () => {
     );
   }
 
-  const renderFlow = () => {
-    switch (category.type) {
-      case "structured":
-        return <StructuredFlow category={category} />;
-      case "guided":
-        return <GuidedFlow category={category} />;
-      case "enterprise":
-        return <EnterpriseFlow category={category} />;
-      default:
-        return <StructuredFlow category={category} />;
-    }
-  };
+  
 
   return (
     <div className="min-h-screen bg-[#F5F7FA] text-[#111827]">
@@ -134,7 +121,7 @@ const SellCategoryPage = () => {
             ))}
           </div>
 
-          {renderFlow()}
+          <GuidedFlow category={category} />
         </div>
       </section>
 
@@ -251,23 +238,23 @@ const SellCategoryPage = () => {
           </div>
           <div className="space-y-4">
             {[
-              {
-                q: "How is the price of my phone decided?",
-                a: "Our experts evaluate your device based on its model, condition, age, and current market demand.",
-              },
-              {
-                q: "Do you pick up the phone from my home?",
-                a: "Yes! We offer free pickup service across Indore and most major cities.",
-              },
-              {
-                q: "How long does the entire process take?",
-                a: "Most sales are completed within 24-48 hours from inspection.",
-              },
-              {
-                q: "Is my data safe?",
-                a: "Absolutely. We factory reset the device in front of you.",
-              },
-            ].map((faq, index) => (
+  {
+    q: "How is my asset evaluated?",
+    a: "Our team reviews the photos, condition, brand, age, and market demand before generating an offer."
+  },
+  {
+    q: "Do you provide pickup service?",
+    a: "Yes. Pickup is scheduled after your offer is accepted."
+  },
+  {
+    q: "How long does the review process take?",
+    a: "Most requests are reviewed within 24-48 hours."
+  },
+  {
+    q: "What items can I sell?",
+    a: "You can sell phones, laptops, furniture, office equipment, appliances, and other eligible assets."
+  }
+].map((faq, index) => (
               <details
                 key={index}
                 className="group bg-white rounded-3xl border border-gray-200 px-8 py-6 cursor-pointer hover:border-gray-300 transition-all"
