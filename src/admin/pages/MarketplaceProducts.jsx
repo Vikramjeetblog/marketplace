@@ -189,15 +189,6 @@ const MarketplaceProducts = () => {
 
     </div>
 
-    {/* DESKTOP TABLE */}
-    <div className="hidden lg:block bg-white border border-[#EEF2F6] rounded-3xl overflow-hidden">
-
-      <div className="overflow-x-auto">
-
-        <table className="w-full min-w-[760px]">
-
-          <thead>
-
         {/* STATS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
 
