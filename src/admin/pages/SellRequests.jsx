@@ -137,10 +137,78 @@ const columns = [
 const SellRequests = () => {
   return (
     <AdminLayout>
+
+
+        <p className="text-sm text-[#6E7C96]">
+          {item.id}
+        </p>
+      </>
+    ),
+  },
+  {
+    key: "category",
+    header: "Category",
+    accessor: (item) => item.category,
+  },
+  {
+    key: "amount",
+    header: "Expected Price",
+    accessor: (item) => item.amount,
+    searchValue: (item) => `₹${item.amount.toLocaleString()} ${item.amount}`,
+    cellClassName: "px-6 py-5 font-semibold",
+    render: (item) => `₹${item.amount.toLocaleString()}`,
+  },
+  {
+    key: "status",
+    header: "Status",
+    accessor: (item) => item.status,
+    render: (item) => (
+      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#FFF7E6] text-[#B7791F]">
+        {item.status}
+      </span>
+    ),
+  },
+  {
+    key: "date",
+    header: "Date",
+    accessor: (item) => item.date,
+  },
+  {
+    key: "action",
+    header: "Action",
+    searchable: false,
+    sortable: false,
+    render: (item) => (
+      <Link
+        to={`/admin/requests/${item.id}`}
+        className="
+          h-10
+          px-4
+          rounded-xl
+          bg-[#020B2D]
+          text-white
+          inline-flex
+          items-center
+          gap-2
+          hover:bg-[#04103A]
+          transition-all
+        "
+      >
+        <Eye size={16} />
+        View
+      </Link>
+    ),
+  },
+];
+
+const SellRequests = () => {
+  return (
+    <AdminLayout>
       <div className="space-y-8">
 
         {/* HEADER */}
         <div className="flex items-center justify-between">
+
           <div>
             <h1 className="text-4xl font-black text-[#020B2D]">
               Sell Requests
@@ -150,6 +218,15 @@ const SellRequests = () => {
               Review incoming asset requests and generate offers.
             </p>
           </div>
+
+        </div>
+
+        {/* STATS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+          {stats.map((item) => {
+            const Icon = item.icon;
+
         </div>
 
         {/* FILTER BUTTON */}
@@ -169,6 +246,7 @@ const SellRequests = () => {
                 className="bg-white rounded-3xl p-6 border border-[#EEF2F6]"
               >
                 <div className="flex items-center justify-between">
+
                   <div>
                     <p className="text-sm text-[#6E7C96]">
                       {item.title}
@@ -185,10 +263,14 @@ const SellRequests = () => {
                       className="text-[#00B67A]"
                     />
                   </div>
+
                 </div>
               </div>
             );
           })}
+
+        </div>
+
         </div>
 
         {/* DATA TABLE */}
@@ -198,6 +280,9 @@ const SellRequests = () => {
           title="Incoming Requests"
           searchPlaceholder="Search requests..."
         />
+
+      </div>
+
       </div>
     </AdminLayout>
   );

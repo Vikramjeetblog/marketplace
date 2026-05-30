@@ -184,6 +184,12 @@ const PickupManagement = () => {
 
         </div>
 
+        <DataTable
+          data={pickups}
+          columns={columns}
+          searchPlaceholder="Search pickups..."
+          minWidth="760px"
+        />
         {/* SEARCH */}
         <div className="bg-white border border-[#EEF2F6] rounded-3xl p-5">
 

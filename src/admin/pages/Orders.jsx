@@ -178,6 +178,12 @@ const Orders = () => {
 
         </div>
 
+        <DataTable
+          data={orders}
+          columns={columns}
+          searchPlaceholder="Search orders..."
+          minWidth="760px"
+        />
         {/* SEARCH */}
         <div className="bg-white border border-[#EEF2F6] rounded-3xl p-5">
 
