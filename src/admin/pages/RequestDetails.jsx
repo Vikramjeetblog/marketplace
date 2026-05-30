@@ -1,10 +1,8 @@
-import React from "react";
 import {
 ArrowLeft,
 IndianRupee,
 Tag,
 XCircle,
-CheckCircle,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
 import AdminLayout from "../layout/AdminLayout";
@@ -139,7 +137,7 @@ return ( <AdminLayout>
           Submitted Images
         </h2>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
           {request.images.map((image, index) => (
             <img
