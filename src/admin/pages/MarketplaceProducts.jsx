@@ -184,7 +184,7 @@ const MarketplaceProducts = () => {
             Add Product
           </button>
 
-        
+        </div>
     
 
         {/* STATS */}
