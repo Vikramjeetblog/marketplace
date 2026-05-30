@@ -1,4 +1,3 @@
-import React from "react";
 import {
   LayoutDashboard,
   ClipboardList,
@@ -8,7 +7,8 @@ import {
   Truck,
   Settings,
   LogOut,
-  PackageSearch
+  PackageSearch,
+  X,
 } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
@@ -29,10 +29,10 @@ const menuItems = [
     path: "/admin/pickups",
   },
   {
-  name: "Inventory",
-  icon: PackageSearch,
-  path: "/admin/inventory",
-},
+    name: "Inventory",
+    icon: PackageSearch,
+    path: "/admin/inventory",
+  },
   {
     name: "Marketplace Products",
     icon: Package,
@@ -55,23 +55,11 @@ const menuItems = [
   },
 ];
 
-const AdminSidebar = () => {
+const SidebarContent = ({ onNavigate, showCloseButton = false }) => {
   return (
-    <div
-      className="
-        hidden
-        md:flex
-        w-[260px]
-        min-h-screen
-        bg-[#04103A]
-        border-r
-        border-white/10
-        flex-col
-        shrink-0
-      "
-    >
+    <>
       {/* LOGO */}
-      <div className="h-[72px] px-6 flex items-center border-b border-white/10">
+      <div className="h-[72px] px-6 flex items-center justify-between border-b border-white/10">
         <div>
           <h1 className="text-[28px] font-black tracking-tight text-white">
             Rupantar
@@ -81,6 +69,17 @@ const AdminSidebar = () => {
             Admin Panel
           </p>
         </div>
+
+        {showCloseButton && (
+          <button
+            type="button"
+            onClick={onNavigate}
+            className="w-10 h-10 rounded-xl border border-white/10 text-slate-300 flex items-center justify-center hover:bg-white/5 hover:text-white transition-all"
+            aria-label="Close admin menu"
+          >
+            <X size={20} />
+          </button>
+        )}
       </div>
 
       {/* NAVIGATION */}
@@ -102,6 +101,7 @@ const AdminSidebar = () => {
                 key={item.name}
                 to={item.path}
                 end={item.path === "/admin"}
+                onClick={onNavigate}
                 className={({ isActive }) =>
                   `
                   flex
@@ -162,7 +162,73 @@ const AdminSidebar = () => {
         </button>
 
       </div>
-    </div>
+    </>
+  );
+};
+
+const AdminSidebar = ({ isOpen = false, onClose }) => {
+  return (
+    <>
+      <div
+        className="
+          hidden
+          md:flex
+          w-[260px]
+          min-h-screen
+          bg-[#04103A]
+          border-r
+          border-white/10
+          flex-col
+          shrink-0
+        "
+      >
+        <SidebarContent />
+      </div>
+
+      <div
+        className={`
+          fixed
+          inset-0
+          z-40
+          bg-[#020B2D]/50
+          transition-opacity
+          duration-300
+          md:hidden
+          ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}
+        `}
+        onClick={onClose}
+        aria-hidden="true"
+      />
+
+      <aside
+        className={`
+          fixed
+          inset-y-0
+          left-0
+          z-50
+          flex
+          w-[82vw]
+          max-w-[320px]
+          min-h-screen
+          bg-[#04103A]
+          border-r
+          border-white/10
+          flex-col
+          shrink-0
+          transform
+          transition-transform
+          duration-300
+          md:hidden
+          ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        `}
+        aria-hidden={!isOpen}
+      >
+        <SidebarContent
+          onNavigate={onClose}
+          showCloseButton
+        />
+      </aside>
+    </>
   );
 };
 

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ArrowLeft,
   User,
@@ -205,7 +204,7 @@ const CustomerDetails = () => {
         </div>
 
         {/* STATS */}
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
           <div className="bg-white border border-[#EEF2F6] rounded-3xl p-6">
 

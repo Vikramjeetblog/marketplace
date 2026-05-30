@@ -1,9 +1,7 @@
-import React from "react";
 import {
 ArrowLeft,
 IndianRupee,
 Package,
-CheckCircle,
 Eye,
 Trash2,
 } from "lucide-react";
@@ -120,7 +118,7 @@ return ( <AdminLayout>
           Product Images
         </h2>
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
           {product.images.map((image, index) => (
             <img
