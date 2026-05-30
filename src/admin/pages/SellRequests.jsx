@@ -4,6 +4,7 @@ import {
   IndianRupee,
   Package,
   TrendingUp,
+  Filter,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import DataTable from "../components/DataTable";
@@ -74,6 +75,8 @@ const columns = [
         <p className="text-sm text-[#6E7C96]">
           {item.id}
         </p>
+        <p className="font-bold text-[#020B2D]">{item.title}</p>
+        <p className="text-sm text-[#6E7C96]">{item.id}</p>
       </>
     ),
   },
@@ -125,6 +128,7 @@ const columns = [
           hover:bg-[#04103A]
           transition-all
         "
+        className="h-10 px-4 rounded-xl bg-[#020B2D] text-white inline-flex items-center gap-2"
       >
         <Eye size={16} />
         View
@@ -142,6 +146,9 @@ const SellRequests = () => {
         {/* HEADER */}
         <div className="flex items-center justify-between">
 
+      <div className="space-y-8">
+
+        <div className="flex items-center justify-between">
           <div>
             <h1 className="text-4xl font-black text-[#020B2D]">
               Sell Requests
@@ -152,11 +159,19 @@ const SellRequests = () => {
             </p>
           </div>
 
+          <button className="h-12 px-5 rounded-2xl border border-[#E5EEF8] flex items-center gap-2">
+            <Filter size={18} />
+            Filters
+          </button>
         </div>
 
         {/* STATS */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
+          {stats.map((item) => {
+            const Icon = item.icon;
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
           {stats.map((item) => {
             const Icon = item.icon;
 
@@ -184,10 +199,14 @@ const SellRequests = () => {
                     />
                   </div>
 
+                    <Icon size={24} className="text-[#00B67A]" />
+                  </div>
                 </div>
               </div>
             );
           })}
+
+        </div>
 
         </div>
 

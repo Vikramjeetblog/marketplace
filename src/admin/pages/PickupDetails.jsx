@@ -7,6 +7,7 @@ import {
   Package,
   Truck,
   Calendar,
+  Search,
   CheckCircle,
 } from "lucide-react";
 import { Link, useParams } from "react-router-dom";

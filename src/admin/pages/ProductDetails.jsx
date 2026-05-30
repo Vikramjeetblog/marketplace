@@ -4,6 +4,11 @@ import {
   Package,
   Eye,
   Trash2,
+ArrowLeft,
+IndianRupee,
+Package,
+Eye,
+Trash2,
 } from "lucide-react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import AdminLayout from "../layout/AdminLayout";
@@ -139,6 +144,7 @@ const ProductDetails = () => {
                   className="w-full h-[220px] rounded-2xl object-cover"
                 />
               ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
             </div>
 

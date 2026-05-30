@@ -259,6 +259,82 @@ const InventoryFormModal = ({
     </div>
   );
 };
+const columns = [
+  {
+    key: "id",
+    header: "Inventory ID",
+    accessor: (item) => item.id,
+    cellClassName: "px-6 py-5 font-semibold",
+  },
+  {
+    key: "asset",
+    header: "Asset",
+    accessor: (item) => item.asset,
+  },
+  {
+    key: "category",
+    header: "Category",
+    accessor: (item) => item.category,
+  },
+  {
+    key: "purchaseCost",
+    header: "Purchase Cost",
+    accessor: (item) => item.purchaseCost,
+    searchValue: (item) => `₹${item.purchaseCost.toLocaleString()} ${item.purchaseCost}`,
+    render: (item) => `₹${item.purchaseCost.toLocaleString()}`,
+  },
+  {
+    key: "repairCost",
+    header: "Repair Cost",
+    accessor: (item) => item.repairCost,
+    searchValue: (item) => `₹${item.repairCost.toLocaleString()} ${item.repairCost}`,
+    render: (item) => `₹${item.repairCost.toLocaleString()}`,
+  },
+  {
+    key: "expectedPrice",
+    header: "Expected Price",
+    accessor: (item) => item.expectedPrice,
+    searchValue: (item) => `₹${item.expectedPrice.toLocaleString()} ${item.expectedPrice}`,
+    cellClassName: "px-6 py-5 font-semibold",
+    render: (item) => `₹${item.expectedPrice.toLocaleString()}`,
+  },
+  {
+    key: "status",
+    header: "Status",
+    accessor: (item) => item.status,
+    render: (item) => (
+      <span
+        className={`px-3 py-1 rounded-full text-xs font-semibold ${statusClasses[item.status]}`}
+      >
+        {item.status}
+      </span>
+    ),
+  },
+  {
+    key: "action",
+    header: "Action",
+    searchable: false,
+    sortable: false,
+    render: (item) => (
+      <Link
+        to={`/admin/inventory/${item.id}`}
+        className="
+          h-10
+          w-10
+          rounded-xl
+          border
+          border-[#E5EEF8]
+          flex
+          items-center
+          justify-center
+          hover:bg-[#F8FAFC]
+        "
+      >
+        <Eye size={16} />
+      </Link>
+    ),
+  },
+];
 
 const Inventory = () => {
   const [inventoryItems, setInventoryItems] = useState(initialInventoryItems);
@@ -558,6 +634,7 @@ const Inventory = () => {
           columns={columns}
           searchPlaceholder="Search inventory..."
           minWidth="1080px"
+          minWidth="920px"
         />
 
       </div>
