@@ -21,7 +21,7 @@ import {
 
 import useProductStore from "../store/useProductStore";
 
-export default function ProductDetails() {
+export default function CustomerProductDetails() {
 
   const { id } = useParams();
 

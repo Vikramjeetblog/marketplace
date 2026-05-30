@@ -14,7 +14,7 @@ import ConfirmModal from "../../components/common/ConfirmModal";
 import AccountSidebar from "../../components/account/AccountSidebar";
 import { useUserStore } from "../../store/useUserStore";
 
-const OrderDetails = () => {
+const CustomerOrderDetails = () => {
   const navigate = useNavigate();
   const { orderId } = useParams();
 
@@ -344,4 +344,4 @@ after evaluation.
   );
 };
 
-export default OrderDetails;
+export default CustomerOrderDetails;
