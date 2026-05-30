@@ -183,11 +183,196 @@ const PickupManagement = () => {
 
         </div>
 
-        <DataTable
-          data={pickups}
-          columns={columns}
-          searchPlaceholder="Search pickups..."
-        />
+        {/* SEARCH */}
+        <div className="bg-white border border-[#EEF2F6] rounded-3xl p-5">
+
+          <div className="relative">
+
+            <Search
+              size={18}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+            />
+
+            <input
+              type="text"
+              placeholder="Search pickups..."
+              className="w-full h-12 pl-12 pr-4 rounded-xl border border-[#E5EEF8] outline-none"
+            />
+
+          </div>
+
+        </div>
+
+        {/* MOBILE CARDS */}
+        <div className="lg:hidden space-y-4">
+
+          {pickups.map((pickup) => (
+            <div
+              key={pickup.id}
+              className="bg-white border border-[#EEF2F6] rounded-2xl p-4"
+            >
+
+              <div className="flex justify-between items-start">
+
+                <div>
+                  <h3 className="font-bold text-[#020B2D]">
+                    {pickup.asset}
+                  </h3>
+
+                  <p className="text-sm text-[#6E7C96]">
+                    {pickup.id}
+                  </p>
+                </div>
+
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-semibold ${statusStyles[pickup.status]}`}
+                >
+                  {pickup.status}
+                </span>
+
+              </div>
+
+              <div className="mt-4 space-y-2 text-sm">
+
+                <div className="flex justify-between">
+                  <span>Seller</span>
+                  <span>{pickup.seller}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span>Date</span>
+                  <span>{pickup.date}</span>
+                </div>
+
+                <div className="flex justify-between">
+                  <span>Agent</span>
+                  <span>{pickup.agent}</span>
+                </div>
+
+              </div>
+
+              <Link
+                to={`/admin/pickups/${pickup.id}`}
+                className="mt-4 h-11 rounded-xl bg-[#020B2D] text-white flex items-center justify-center"
+              >
+                View Pickup
+              </Link>
+
+            </div>
+          ))}
+
+        </div>
+
+        {/* DESKTOP TABLE */}
+        <div className="hidden lg:block bg-white border border-[#EEF2F6] rounded-3xl overflow-hidden">
+
+          <div className="overflow-x-auto">
+
+            <table className="w-full min-w-[760px]">
+
+              <thead>
+
+                <tr className="bg-[#F8FAFC]">
+
+                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
+                    Pickup ID
+                  </th>
+
+                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
+                    Seller
+                  </th>
+
+                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
+                    Asset
+                  </th>
+
+                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
+                    Date
+                  </th>
+
+                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
+                    Agent
+                  </th>
+
+                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
+                    Status
+                  </th>
+
+                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
+                    Actions
+                  </th>
+
+                </tr>
+
+              </thead>
+
+              <tbody>
+
+                {pickups.map((pickup) => (
+                  <tr
+                    key={pickup.id}
+                    className="border-t border-[#EEF2F6]"
+                  >
+
+                    <td className="px-6 py-5 font-semibold">
+                      {pickup.id}
+                    </td>
+
+                    <td className="px-6 py-5">
+                      {pickup.seller}
+                    </td>
+
+                    <td className="px-6 py-5">
+                      {pickup.asset}
+                    </td>
+
+                    <td className="px-6 py-5">
+                      {pickup.date}
+                    </td>
+
+                    <td className="px-6 py-5">
+                      {pickup.agent}
+                    </td>
+
+                    <td className="px-6 py-5">
+
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-semibold ${statusStyles[pickup.status]}`}
+                      >
+                        {pickup.status}
+                      </span>
+
+                    </td>
+
+                    <td className="px-6 py-5">
+
+                      <div className="flex gap-2">
+
+                        <Link
+                          to={`/admin/pickups/${pickup.id}`}
+                          className="h-10 w-10 rounded-xl border border-[#E5EEF8] flex items-center justify-center"
+                        >
+                          <Eye size={16} />
+                        </Link>
+
+                        <button className="h-10 w-10 rounded-xl border border-[#E5EEF8] flex items-center justify-center">
+                          <UserPlus size={16} />
+                        </button>
+
+                      </div>
+
+                    </td>
+
+                  </tr>
+                ))}
+
+              </tbody>
+
+            </table>
+
+          </div>
+
+        </div>
 
       </div>
 
