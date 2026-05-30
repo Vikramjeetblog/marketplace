@@ -4,6 +4,7 @@ import {
   IndianRupee,
   Package,
   TrendingUp,
+   Filter,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import DataTable from "../components/DataTable";
@@ -136,12 +137,10 @@ const columns = [
 const SellRequests = () => {
   return (
     <AdminLayout>
-
       <div className="space-y-8">
 
         {/* HEADER */}
         <div className="flex items-center justify-between">
-
           <div>
             <h1 className="text-4xl font-black text-[#020B2D]">
               Sell Requests
@@ -151,33 +150,16 @@ const SellRequests = () => {
               Review incoming asset requests and generate offers.
             </p>
           </div>
-
         </div>
 
+        {/* FILTER BUTTON */}
         <button className="h-12 px-5 rounded-2xl border border-[#E5EEF8] flex items-center gap-2">
           <Filter size={18} />
           Filters
         </button>
 
-      </div>
-
-    </div>
-
-    {/* REQUEST TABLE */}
-    <div className="bg-white rounded-3xl border border-[#EEF2F6] overflow-hidden">
-
-      <div className="px-6 py-5 border-b border-[#EEF2F6]">
-
-        <h2 className="font-bold text-[#020B2D]">
-          Incoming Requests
-        </h2>
-
-      </div>
-
-      <div className="overflow-x-auto">
-
-        <table className="w-full min-w-[760px]">
-
+        {/* STATS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
           {stats.map((item) => {
             const Icon = item.icon;
 
@@ -187,7 +169,6 @@ const SellRequests = () => {
                 className="bg-white rounded-3xl p-6 border border-[#EEF2F6]"
               >
                 <div className="flex items-center justify-between">
-
                   <div>
                     <p className="text-sm text-[#6E7C96]">
                       {item.title}
@@ -204,23 +185,20 @@ const SellRequests = () => {
                       className="text-[#00B67A]"
                     />
                   </div>
-
                 </div>
               </div>
             );
           })}
-
         </div>
 
+        {/* DATA TABLE */}
         <DataTable
           data={requests}
           columns={columns}
           title="Incoming Requests"
           searchPlaceholder="Search requests..."
         />
-
       </div>
-
     </AdminLayout>
   );
 };
