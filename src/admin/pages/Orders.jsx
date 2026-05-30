@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ShoppingCart,
   Package,
@@ -84,7 +83,7 @@ const Orders = () => {
         </div>
 
         {/* STATS */}
-        <div className="grid grid-cols-2 xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
 
           {stats.map((item) => {
             const Icon = item.icon;
@@ -197,7 +196,7 @@ const Orders = () => {
 
           <div className="overflow-x-auto">
 
-            <table className="w-full">
+            <table className="w-full min-w-[760px]">
 
               <thead>
 

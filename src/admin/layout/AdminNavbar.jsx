@@ -1,31 +1,45 @@
-import React from "react";
 import {
   Bell,
   Search,
   ChevronDown,
+  Menu,
 } from "lucide-react";
 
-const AdminNavbar = () => {
+const AdminNavbar = ({ onMenuClick }) => {
   return (
     <header className="bg-white border-b border-[#EEF2F6] px-4 md:px-6 lg:px-8">
 
       <div className="h-[72px] flex items-center justify-between gap-4">
 
         {/* LEFT */}
-        <div className="min-w-0">
+        <div className="flex items-center gap-3 min-w-0">
 
-          <h1 className="text-xl md:text-2xl font-black text-[#020B2D] truncate">
-            Rupantar
-          </h1>
+          <button
+            type="button"
+            onClick={onMenuClick}
+            className="md:hidden w-11 h-11 rounded-xl border border-[#E5EEF8] bg-white flex items-center justify-center hover:bg-[#F8FAFC] transition-all shrink-0"
+            aria-label="Open admin menu"
+          >
+            <Menu
+              size={20}
+              className="text-[#020B2D]"
+            />
+          </button>
 
-          <p className="hidden sm:block text-sm text-[#6E7C96] truncate">
-            Manage requests, products and orders
-          </p>
+          <div className="min-w-0">
+            <h1 className="text-xl md:text-2xl font-black text-[#020B2D] truncate">
+              Rupantar
+            </h1>
+
+            <p className="hidden sm:block text-sm text-[#6E7C96] truncate">
+              Manage requests, products and orders
+            </p>
+          </div>
 
         </div>
 
         {/* RIGHT */}
-        <div className="flex items-center gap-2 md:gap-4">
+        <div className="flex items-center gap-2 md:gap-4 shrink-0">
 
           {/* SEARCH */}
           <div className="hidden lg:flex items-center gap-3 h-[46px] w-[280px] xl:w-[340px] px-4 rounded-2xl border border-[#E5EEF8] bg-[#F8FAFC]">
@@ -92,13 +106,13 @@ const AdminNavbar = () => {
 
           <Search
             size={18}
-            className="text-[#94A3B8]"
+            className="text-[#94A3B8] shrink-0"
           />
 
           <input
             type="text"
             placeholder="Search..."
-            className="bg-transparent flex-1 outline-none text-sm"
+            className="bg-transparent flex-1 min-w-0 outline-none text-sm"
           />
 
         </div>
