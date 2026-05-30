@@ -3,11 +3,11 @@ import {
   Calendar,
   CheckCircle,
   Clock,
-  Search,
   Eye,
   UserPlus,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import DataTable from "../components/DataTable";
 import AdminLayout from "../layout/AdminLayout";
 
 const stats = [
@@ -65,6 +65,67 @@ const statusStyles = {
   "Pending Assignment": "bg-yellow-100 text-yellow-700",
   Completed: "bg-green-100 text-green-700",
 };
+
+const columns = [
+  {
+    key: "id",
+    header: "Pickup ID",
+    accessor: (pickup) => pickup.id,
+    cellClassName: "px-6 py-5 font-semibold",
+  },
+  {
+    key: "seller",
+    header: "Seller",
+    accessor: (pickup) => pickup.seller,
+  },
+  {
+    key: "asset",
+    header: "Asset",
+    accessor: (pickup) => pickup.asset,
+  },
+  {
+    key: "date",
+    header: "Date",
+    accessor: (pickup) => pickup.date,
+  },
+  {
+    key: "agent",
+    header: "Agent",
+    accessor: (pickup) => pickup.agent,
+  },
+  {
+    key: "status",
+    header: "Status",
+    accessor: (pickup) => pickup.status,
+    render: (pickup) => (
+      <span
+        className={`px-3 py-1 rounded-full text-xs font-semibold ${statusStyles[pickup.status]}`}
+      >
+        {pickup.status}
+      </span>
+    ),
+  },
+  {
+    key: "actions",
+    header: "Actions",
+    searchable: false,
+    sortable: false,
+    render: (pickup) => (
+      <div className="flex gap-2">
+        <Link
+          to={`/admin/pickups/${pickup.id}`}
+          className="h-10 w-10 rounded-xl border border-[#E5EEF8] flex items-center justify-center"
+        >
+          <Eye size={16} />
+        </Link>
+
+        <button className="h-10 w-10 rounded-xl border border-[#E5EEF8] flex items-center justify-center">
+          <UserPlus size={16} />
+        </button>
+      </div>
+    ),
+  },
+];
 
 const PickupManagement = () => {
   return (

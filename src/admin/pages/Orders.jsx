@@ -3,10 +3,10 @@ import {
   Package,
   Truck,
   CheckCircle,
-  Search,
   Eye,
 } from "lucide-react";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
+import DataTable from "../components/DataTable";
 import AdminLayout from "../layout/AdminLayout";
 
 const stats = [
@@ -64,6 +64,64 @@ const statusClasses = {
   Shipped: "bg-blue-100 text-blue-700",
   Processing: "bg-yellow-100 text-yellow-700",
 };
+
+const columns = [
+  {
+    key: "id",
+    header: "Order ID",
+    accessor: (order) => order.id,
+    cellClassName: "px-6 py-5 font-semibold",
+  },
+  {
+    key: "customer",
+    header: "Customer",
+    accessor: (order) => order.customer,
+  },
+  {
+    key: "product",
+    header: "Product",
+    accessor: (order) => order.product,
+  },
+  {
+    key: "amount",
+    header: "Amount",
+    accessor: (order) => order.amount,
+    searchValue: (order) => `₹${order.amount.toLocaleString()} ${order.amount}`,
+    cellClassName: "px-6 py-5 font-semibold",
+    render: (order) => `₹${order.amount.toLocaleString()}`,
+  },
+  {
+    key: "status",
+    header: "Status",
+    accessor: (order) => order.status,
+    render: (order) => (
+      <span
+        className={`px-3 py-1 rounded-full text-xs font-semibold ${statusClasses[order.status]}`}
+      >
+        {order.status}
+      </span>
+    ),
+  },
+  {
+    key: "date",
+    header: "Date",
+    accessor: (order) => order.date,
+  },
+  {
+    key: "action",
+    header: "Action",
+    searchable: false,
+    sortable: false,
+    render: (order) => (
+      <Link
+        to={`/admin/orders/${order.id}`}
+        className="h-10 w-10 rounded-xl border border-[#E5EEF8] flex items-center justify-center hover:bg-[#F8FAFC]"
+      >
+        <Eye size={16} />
+      </Link>
+    ),
+  },
+];
 
 const Orders = () => {
   return (

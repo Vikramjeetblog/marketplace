@@ -1,12 +1,12 @@
 import {
   Package,
-  Search,
   Wrench,
   Eye,
   CheckCircle,
   AlertTriangle,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import DataTable from "../components/DataTable";
 import AdminLayout from "../layout/AdminLayout";
 
 const inventoryStats = [
@@ -70,6 +70,83 @@ const statusClasses = {
   Sold: "bg-slate-100 text-slate-700",
 };
 
+const columns = [
+  {
+    key: "id",
+    header: "Inventory ID",
+    accessor: (item) => item.id,
+    cellClassName: "px-6 py-5 font-semibold",
+  },
+  {
+    key: "asset",
+    header: "Asset",
+    accessor: (item) => item.asset,
+  },
+  {
+    key: "category",
+    header: "Category",
+    accessor: (item) => item.category,
+  },
+  {
+    key: "purchaseCost",
+    header: "Purchase Cost",
+    accessor: (item) => item.purchaseCost,
+    searchValue: (item) => `₹${item.purchaseCost.toLocaleString()} ${item.purchaseCost}`,
+    render: (item) => `₹${item.purchaseCost.toLocaleString()}`,
+  },
+  {
+    key: "repairCost",
+    header: "Repair Cost",
+    accessor: (item) => item.repairCost,
+    searchValue: (item) => `₹${item.repairCost.toLocaleString()} ${item.repairCost}`,
+    render: (item) => `₹${item.repairCost.toLocaleString()}`,
+  },
+  {
+    key: "expectedPrice",
+    header: "Expected Price",
+    accessor: (item) => item.expectedPrice,
+    searchValue: (item) => `₹${item.expectedPrice.toLocaleString()} ${item.expectedPrice}`,
+    cellClassName: "px-6 py-5 font-semibold",
+    render: (item) => `₹${item.expectedPrice.toLocaleString()}`,
+  },
+  {
+    key: "status",
+    header: "Status",
+    accessor: (item) => item.status,
+    render: (item) => (
+      <span
+        className={`px-3 py-1 rounded-full text-xs font-semibold ${statusClasses[item.status]}`}
+      >
+        {item.status}
+      </span>
+    ),
+  },
+  {
+    key: "action",
+    header: "Action",
+    searchable: false,
+    sortable: false,
+    render: (item) => (
+      <Link
+        to={`/admin/inventory/${item.id}`}
+        className="
+          h-10
+          w-10
+          rounded-xl
+          border
+          border-[#E5EEF8]
+          flex
+          items-center
+          justify-center
+          hover:bg-[#F8FAFC]
+        "
+      >
+        <Eye size={16} />
+      </Link>
+    ),
+  },
+];
+
 const Inventory = () => {
   return (
     <AdminLayout>
@@ -130,146 +207,12 @@ const Inventory = () => {
 
         </div>
 
-        {/* SEARCH */}
-        <div className="bg-white border border-[#EEF2F6] rounded-3xl p-5">
-
-          <div className="relative">
-
-            <Search
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]"
-            />
-
-            <input
-              type="text"
-              placeholder="Search inventory..."
-              className="w-full h-12 pl-12 pr-4 rounded-xl border border-[#E5EEF8] outline-none"
-            />
-
-          </div>
-
-        </div>
-
-        {/* TABLE */}
-        <div className="bg-white border border-[#EEF2F6] rounded-3xl overflow-hidden">
-
-          <div className="overflow-x-auto">
-
-            <table className="w-full min-w-[760px]">
-
-              <thead>
-
-                <tr className="bg-[#F8FAFC]">
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Inventory ID
-                  </th>
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Asset
-                  </th>
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Category
-                  </th>
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Purchase Cost
-                  </th>
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Repair Cost
-                  </th>
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Expected Price
-                  </th>
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Status
-                  </th>
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Action
-                  </th>
-
-                </tr>
-
-              </thead>
-
-              <tbody>
-
-                {inventoryItems.map((item) => (
-                  <tr
-                    key={item.id}
-                    className="border-t border-[#EEF2F6]"
-                  >
-
-                    <td className="px-6 py-5 font-semibold">
-                      {item.id}
-                    </td>
-
-                    <td className="px-6 py-5">
-                      {item.asset}
-                    </td>
-
-                    <td className="px-6 py-5">
-                      {item.category}
-                    </td>
-
-                    <td className="px-6 py-5">
-                      ₹{item.purchaseCost.toLocaleString()}
-                    </td>
-
-                    <td className="px-6 py-5">
-                      ₹{item.repairCost.toLocaleString()}
-                    </td>
-
-                    <td className="px-6 py-5 font-semibold">
-                      ₹{item.expectedPrice.toLocaleString()}
-                    </td>
-
-                    <td className="px-6 py-5">
-
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold ${statusClasses[item.status]}`}
-                      >
-                        {item.status}
-                      </span>
-
-                    </td>
-
-                    <td className="px-6 py-5">
-
-                      <Link
-                        to={`/admin/inventory/${item.id}`}
-                        className="
-                          h-10
-                          w-10
-                          rounded-xl
-                          border
-                          border-[#E5EEF8]
-                          flex
-                          items-center
-                          justify-center
-                          hover:bg-[#F8FAFC]
-                        "
-                      >
-                        <Eye size={16} />
-                      </Link>
-
-                    </td>
-
-                  </tr>
-                ))}
-
-              </tbody>
-
-            </table>
-
-          </div>
-
-        </div>
+        <DataTable
+          data={inventoryItems}
+          columns={columns}
+          searchPlaceholder="Search inventory..."
+          minWidth="920px"
+        />
 
       </div>
 
