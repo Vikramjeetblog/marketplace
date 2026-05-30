@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ArrowLeft,
   Upload,
@@ -108,7 +107,7 @@ const EditProduct = () => {
                 className="w-full h-[350px] rounded-2xl object-cover"
               />
 
-              <div className="grid grid-cols-4 gap-3 mt-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
 
                 {[1, 2, 3, 4].map((item) => (
                   <div

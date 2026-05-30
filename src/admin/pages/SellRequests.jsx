@@ -1,4 +1,3 @@
-import React from "react";
 import {
 Search,
 Filter,
@@ -161,7 +160,7 @@ return ( <AdminLayout>
 
       <div className="overflow-x-auto">
 
-        <table className="w-full">
+        <table className="w-full min-w-[760px]">
 
           <thead>
 
