@@ -4,7 +4,7 @@ import {
   IndianRupee,
   Package,
   TrendingUp,
-   Filter,
+  Filter,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import DataTable from "../components/DataTable";
@@ -68,13 +68,8 @@ const columns = [
     sortValue: (item) => item.title,
     render: (item) => (
       <>
-        <p className="font-bold text-[#020B2D]">
-          {item.title}
-        </p>
-
-        <p className="text-sm text-[#6E7C96]">
-          {item.id}
-        </p>
+        <p className="font-bold text-[#020B2D]">{item.title}</p>
+        <p className="text-sm text-[#6E7C96]">{item.id}</p>
       </>
     ),
   },
@@ -87,8 +82,6 @@ const columns = [
     key: "amount",
     header: "Expected Price",
     accessor: (item) => item.amount,
-    searchValue: (item) => `₹${item.amount.toLocaleString()} ${item.amount}`,
-    cellClassName: "px-6 py-5 font-semibold",
     render: (item) => `₹${item.amount.toLocaleString()}`,
   },
   {
@@ -114,85 +107,7 @@ const columns = [
     render: (item) => (
       <Link
         to={`/admin/requests/${item.id}`}
-        className="
-          h-10
-          px-4
-          rounded-xl
-          bg-[#020B2D]
-          text-white
-          inline-flex
-          items-center
-          gap-2
-          hover:bg-[#04103A]
-          transition-all
-        "
-      >
-        <Eye size={16} />
-        View
-      </Link>
-    ),
-  },
-];
-
-const SellRequests = () => {
-  return (
-    <AdminLayout>
-
-
-        <p className="text-sm text-[#6E7C96]">
-          {item.id}
-        </p>
-      </>
-    ),
-  },
-  {
-    key: "category",
-    header: "Category",
-    accessor: (item) => item.category,
-  },
-  {
-    key: "amount",
-    header: "Expected Price",
-    accessor: (item) => item.amount,
-    searchValue: (item) => `₹${item.amount.toLocaleString()} ${item.amount}`,
-    cellClassName: "px-6 py-5 font-semibold",
-    render: (item) => `₹${item.amount.toLocaleString()}`,
-  },
-  {
-    key: "status",
-    header: "Status",
-    accessor: (item) => item.status,
-    render: (item) => (
-      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-[#FFF7E6] text-[#B7791F]">
-        {item.status}
-      </span>
-    ),
-  },
-  {
-    key: "date",
-    header: "Date",
-    accessor: (item) => item.date,
-  },
-  {
-    key: "action",
-    header: "Action",
-    searchable: false,
-    sortable: false,
-    render: (item) => (
-      <Link
-        to={`/admin/requests/${item.id}`}
-        className="
-          h-10
-          px-4
-          rounded-xl
-          bg-[#020B2D]
-          text-white
-          inline-flex
-          items-center
-          gap-2
-          hover:bg-[#04103A]
-          transition-all
-        "
+        className="h-10 px-4 rounded-xl bg-[#020B2D] text-white inline-flex items-center gap-2"
       >
         <Eye size={16} />
         View
@@ -206,9 +121,7 @@ const SellRequests = () => {
     <AdminLayout>
       <div className="space-y-8">
 
-        {/* HEADER */}
         <div className="flex items-center justify-between">
-
           <div>
             <h1 className="text-4xl font-black text-[#020B2D]">
               Sell Requests
@@ -219,23 +132,12 @@ const SellRequests = () => {
             </p>
           </div>
 
+          <button className="h-12 px-5 rounded-2xl border border-[#E5EEF8] flex items-center gap-2">
+            <Filter size={18} />
+            Filters
+          </button>
         </div>
 
-        {/* STATS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-
-          {stats.map((item) => {
-            const Icon = item.icon;
-
-        </div>
-
-        {/* FILTER BUTTON */}
-        <button className="h-12 px-5 rounded-2xl border border-[#E5EEF8] flex items-center gap-2">
-          <Filter size={18} />
-          Filters
-        </button>
-
-        {/* STATS */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
           {stats.map((item) => {
             const Icon = item.icon;
@@ -246,7 +148,6 @@ const SellRequests = () => {
                 className="bg-white rounded-3xl p-6 border border-[#EEF2F6]"
               >
                 <div className="flex items-center justify-between">
-
                   <div>
                     <p className="text-sm text-[#6E7C96]">
                       {item.title}
@@ -258,30 +159,20 @@ const SellRequests = () => {
                   </div>
 
                   <div className="w-14 h-14 rounded-2xl bg-[#00B67A]/10 flex items-center justify-center">
-                    <Icon
-                      size={24}
-                      className="text-[#00B67A]"
-                    />
+                    <Icon size={24} className="text-[#00B67A]" />
                   </div>
-
                 </div>
               </div>
             );
           })}
-
         </div>
 
-        </div>
-
-        {/* DATA TABLE */}
         <DataTable
           data={requests}
           columns={columns}
           title="Incoming Requests"
           searchPlaceholder="Search requests..."
         />
-
-      </div>
 
       </div>
     </AdminLayout>
