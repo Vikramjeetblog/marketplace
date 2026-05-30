@@ -68,6 +68,13 @@ const columns = [
     sortValue: (item) => item.title,
     render: (item) => (
       <>
+        <p className="font-bold text-[#020B2D]">
+          {item.title}
+        </p>
+
+        <p className="text-sm text-[#6E7C96]">
+          {item.id}
+        </p>
         <p className="font-bold text-[#020B2D]">{item.title}</p>
         <p className="text-sm text-[#6E7C96]">{item.id}</p>
       </>
@@ -82,6 +89,8 @@ const columns = [
     key: "amount",
     header: "Expected Price",
     accessor: (item) => item.amount,
+    searchValue: (item) => `₹${item.amount.toLocaleString()} ${item.amount}`,
+    cellClassName: "px-6 py-5 font-semibold",
     render: (item) => `₹${item.amount.toLocaleString()}`,
   },
   {
@@ -107,6 +116,18 @@ const columns = [
     render: (item) => (
       <Link
         to={`/admin/requests/${item.id}`}
+        className="
+          h-10
+          px-4
+          rounded-xl
+          bg-[#020B2D]
+          text-white
+          inline-flex
+          items-center
+          gap-2
+          hover:bg-[#04103A]
+          transition-all
+        "
         className="h-10 px-4 rounded-xl bg-[#020B2D] text-white inline-flex items-center gap-2"
       >
         <Eye size={16} />
@@ -119,6 +140,12 @@ const columns = [
 const SellRequests = () => {
   return (
     <AdminLayout>
+
+      <div className="space-y-8">
+
+        {/* HEADER */}
+        <div className="flex items-center justify-between">
+
       <div className="space-y-8">
 
         <div className="flex items-center justify-between">
@@ -138,6 +165,12 @@ const SellRequests = () => {
           </button>
         </div>
 
+        {/* STATS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+          {stats.map((item) => {
+            const Icon = item.icon;
+
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
           {stats.map((item) => {
             const Icon = item.icon;
@@ -148,6 +181,7 @@ const SellRequests = () => {
                 className="bg-white rounded-3xl p-6 border border-[#EEF2F6]"
               >
                 <div className="flex items-center justify-between">
+
                   <div>
                     <p className="text-sm text-[#6E7C96]">
                       {item.title}
@@ -159,12 +193,21 @@ const SellRequests = () => {
                   </div>
 
                   <div className="w-14 h-14 rounded-2xl bg-[#00B67A]/10 flex items-center justify-center">
+                    <Icon
+                      size={24}
+                      className="text-[#00B67A]"
+                    />
+                  </div>
+
                     <Icon size={24} className="text-[#00B67A]" />
                   </div>
                 </div>
               </div>
             );
           })}
+
+        </div>
+
         </div>
 
         <DataTable
@@ -175,6 +218,7 @@ const SellRequests = () => {
         />
 
       </div>
+
     </AdminLayout>
   );
 };
