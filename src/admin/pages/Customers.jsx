@@ -1,13 +1,12 @@
-import React from "react";
 import {
   Users,
   UserCheck,
   IndianRupee,
   ShoppingBag,
-  Search,
   Eye,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import DataTable from "../components/DataTable";
 import AdminLayout from "../layout/AdminLayout";
 
 const stats = [
@@ -60,6 +59,73 @@ const customers = [
   },
 ];
 
+const columns = [
+  {
+    key: "customer",
+    header: "Customer",
+    searchValue: (customer) => `${customer.name} ${customer.email}`,
+    sortValue: (customer) => customer.name,
+    render: (customer) => (
+      <>
+        <p className="font-semibold text-[#020B2D]">
+          {customer.name}
+        </p>
+
+        <p className="text-sm text-[#6E7C96]">
+          {customer.email}
+        </p>
+      </>
+    ),
+  },
+  {
+    key: "orders",
+    header: "Orders",
+    accessor: (customer) => customer.orders,
+  },
+  {
+    key: "spent",
+    header: "Total Spent",
+    accessor: (customer) => customer.spent,
+    searchValue: (customer) => `₹${customer.spent.toLocaleString()} ${customer.spent}`,
+    cellClassName: "px-6 py-5 font-semibold",
+    render: (customer) => `₹${customer.spent.toLocaleString()}`,
+  },
+  {
+    key: "status",
+    header: "Status",
+    accessor: (customer) => customer.status,
+    render: (customer) => (
+      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+        {customer.status}
+      </span>
+    ),
+  },
+  {
+    key: "action",
+    header: "Action",
+    searchable: false,
+    sortable: false,
+    render: (customer) => (
+      <Link
+        to={`/admin/customers/${customer.id}`}
+        className="
+          h-10
+          w-10
+          rounded-xl
+          border
+          border-[#E5EEF8]
+          flex
+          items-center
+          justify-center
+          hover:bg-[#F8FAFC]
+        "
+      >
+        <Eye size={16} />
+      </Link>
+    ),
+  },
+];
+
 const Customers = () => {
   return (
     <AdminLayout>
@@ -77,7 +143,7 @@ const Customers = () => {
         </div>
 
         {/* STATS */}
-        <div className="grid grid-cols-2 xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
 
           {stats.map((item) => {
             const Icon = item.icon;
@@ -113,192 +179,11 @@ const Customers = () => {
 
         </div>
 
-        {/* SEARCH */}
-        <div className="bg-white border border-[#EEF2F6] rounded-3xl p-5">
-
-          <div className="relative">
-
-            <Search
-              size={18}
-              className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94A3B8]"
-            />
-
-            <input
-              type="text"
-              placeholder="Search customers..."
-              className="w-full h-12 pl-12 pr-4 rounded-xl border border-[#E5EEF8] outline-none"
-            />
-
-          </div>
-
-        </div>
-
-        {/* MOBILE */}
-        <div className="lg:hidden space-y-4">
-
-          {customers.map((customer) => (
-            <div
-              key={customer.id}
-              className="bg-white border border-[#EEF2F6] rounded-2xl p-4"
-            >
-              <div className="flex justify-between items-start">
-
-                <div>
-                  <h3 className="font-bold text-[#020B2D]">
-                    {customer.name}
-                  </h3>
-
-                  <p className="text-sm text-[#6E7C96]">
-                    {customer.email}
-                  </p>
-                </div>
-
-                <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                  {customer.status}
-                </span>
-
-              </div>
-
-              <div className="mt-4 space-y-2 text-sm">
-
-                <div className="flex justify-between">
-                  <span>Orders</span>
-                  <span>{customer.orders}</span>
-                </div>
-
-                <div className="flex justify-between">
-                  <span>Total Spent</span>
-                  <span>
-                    ₹{customer.spent.toLocaleString()}
-                  </span>
-                </div>
-
-              </div>
-
-              <Link
-                to={`/admin/customers/${customer.id}`}
-                className="
-                  mt-4
-                  h-11
-                  rounded-xl
-                  bg-[#020B2D]
-                  text-white
-                  flex
-                  items-center
-                  justify-center
-                  font-medium
-                "
-              >
-                View Customer
-              </Link>
-
-            </div>
-          ))}
-
-        </div>
-
-        {/* DESKTOP TABLE */}
-        <div className="hidden lg:block bg-white border border-[#EEF2F6] rounded-3xl overflow-hidden">
-
-          <div className="overflow-x-auto">
-
-            <table className="w-full">
-
-              <thead>
-
-                <tr className="bg-[#F8FAFC]">
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Customer
-                  </th>
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Orders
-                  </th>
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Total Spent
-                  </th>
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Status
-                  </th>
-
-                  <th className="px-6 py-4 text-left text-sm text-[#6E7C96]">
-                    Action
-                  </th>
-
-                </tr>
-
-              </thead>
-
-              <tbody>
-
-                {customers.map((customer) => (
-                  <tr
-                    key={customer.id}
-                    className="border-t border-[#EEF2F6]"
-                  >
-
-                    <td className="px-6 py-5">
-
-                      <p className="font-semibold text-[#020B2D]">
-                        {customer.name}
-                      </p>
-
-                      <p className="text-sm text-[#6E7C96]">
-                        {customer.email}
-                      </p>
-
-                    </td>
-
-                    <td className="px-6 py-5">
-                      {customer.orders}
-                    </td>
-
-                    <td className="px-6 py-5 font-semibold">
-                      ₹{customer.spent.toLocaleString()}
-                    </td>
-
-                    <td className="px-6 py-5">
-
-                      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                        {customer.status}
-                      </span>
-
-                    </td>
-
-                    <td className="px-6 py-5">
-
-                      <Link
-                        to={`/admin/customers/${customer.id}`}
-                        className="
-                          h-10
-                          w-10
-                          rounded-xl
-                          border
-                          border-[#E5EEF8]
-                          flex
-                          items-center
-                          justify-center
-                          hover:bg-[#F8FAFC]
-                        "
-                      >
-                        <Eye size={16} />
-                      </Link>
-
-                    </td>
-
-                  </tr>
-                ))}
-
-              </tbody>
-
-            </table>
-
-          </div>
-
-        </div>
+        <DataTable
+          data={customers}
+          columns={columns}
+          searchPlaceholder="Search customers..."
+        />
 
       </div>
     </AdminLayout>
