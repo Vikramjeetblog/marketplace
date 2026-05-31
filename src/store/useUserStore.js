@@ -131,9 +131,12 @@ export const useUserStore = create(
       }),
 
     // LOGOUT
-    logout: () => {
+    
+logout: () => {
 
-  // ONLY LOGOUT SESSION
+  localStorage.removeItem("token");
+  localStorage.removeItem("rupantarUser");
+
   set({
     user: null,
   });

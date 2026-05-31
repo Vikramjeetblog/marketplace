@@ -6,64 +6,18 @@ import {
   Eye,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import DataTable from "../components/DataTable";
 import AdminLayout from "../layout/AdminLayout";
-
-const stats = [
-  {
-    title: "Total Customers",
-    value: "1,248",
-    icon: Users,
-  },
-  {
-    title: "Active Customers",
-    value: "986",
-    icon: UserCheck,
-  },
-  {
-    title: "Orders Placed",
-    value: "3,452",
-    icon: ShoppingBag,
-  },
-  {
-    title: "Customer Revenue",
-    value: "₹12.4L",
-    icon: IndianRupee,
-  },
-];
-
-const customers = [
-  {
-    id: "CUS001",
-    name: "Rahul Sharma",
-    email: "rahul@example.com",
-    orders: 4,
-    spent: 68000,
-    status: "Active",
-  },
-  {
-    id: "CUS002",
-    name: "Priya Singh",
-    email: "priya@example.com",
-    orders: 2,
-    spent: 18500,
-    status: "Active",
-  },
-  {
-    id: "CUS003",
-    name: "Ankit Verma",
-    email: "ankit@example.com",
-    orders: 1,
-    spent: 19999,
-    status: "Active",
-  },
-];
+import { getUsers } from "../../api/userApi";
 
 const columns = [
   {
     key: "customer",
     header: "Customer",
-    searchValue: (customer) => `${customer.name} ${customer.email}`,
+    searchValue: (customer) =>
+      `${customer.name} ${customer.email}`,
     sortValue: (customer) => customer.name,
     render: (customer) => (
       <>
@@ -86,16 +40,24 @@ const columns = [
     key: "spent",
     header: "Total Spent",
     accessor: (customer) => customer.spent,
-    searchValue: (customer) => `₹${customer.spent.toLocaleString()} ${customer.spent}`,
+    searchValue: (customer) =>
+      `₹${customer.spent.toLocaleString()} ${customer.spent}`,
     cellClassName: "px-6 py-5 font-semibold",
-    render: (customer) => `₹${customer.spent.toLocaleString()}`,
+    render: (customer) =>
+      `₹${customer.spent.toLocaleString()}`,
   },
   {
     key: "status",
     header: "Status",
     accessor: (customer) => customer.status,
     render: (customer) => (
-      <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+      <span
+        className={`px-3 py-1 rounded-full text-xs font-semibold ${
+          customer.status === "Active"
+            ? "bg-green-100 text-green-700"
+            : "bg-red-100 text-red-700"
+        }`}
+      >
         {customer.status}
       </span>
     ),
@@ -108,17 +70,7 @@ const columns = [
     render: (customer) => (
       <Link
         to={`/admin/customers/${customer.id}`}
-        className="
-          h-10
-          w-10
-          rounded-xl
-          border
-          border-[#E5EEF8]
-          flex
-          items-center
-          justify-center
-          hover:bg-[#F8FAFC]
-        "
+        className="h-10 w-10 rounded-xl border border-[#E5EEF8] flex items-center justify-center hover:bg-[#F8FAFC]"
       >
         <Eye size={16} />
       </Link>
@@ -127,10 +79,90 @@ const columns = [
 ];
 
 const Customers = () => {
+  const [customers, setCustomers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await getUsers();
+
+        const formattedUsers = response.data.users.map(
+          (user) => ({
+            id: user.id,
+            name: user.full_name,
+            email: user.email,
+            phone: user.phone,
+            orders: 0,
+            spent: 0,
+            status: user.is_verified
+              ? "Active"
+              : "Inactive",
+          })
+        );
+
+        setCustomers(formattedUsers);
+      } catch (error) {
+        console.error("Fetch Users Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  const stats = [
+    {
+      title: "Total Customers",
+      value: customers.length,
+      icon: Users,
+    },
+    {
+      title: "Active Customers",
+      value: customers.filter(
+        (customer) =>
+          customer.status === "Active"
+      ).length,
+      icon: UserCheck,
+    },
+    {
+      title: "Orders Placed",
+      value: customers.reduce(
+        (total, customer) =>
+          total + customer.orders,
+        0
+      ),
+      icon: ShoppingBag,
+    },
+    {
+      title: "Customer Revenue",
+      value: `₹${customers
+        .reduce(
+          (total, customer) =>
+            total + customer.spent,
+          0
+        )
+        .toLocaleString()}`,
+      icon: IndianRupee,
+    },
+  ];
+
+  if (loading) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <p className="text-lg font-medium text-[#6E7C96]">
+            Loading customers...
+          </p>
+        </div>
+      </AdminLayout>
+    );
+  }
+
   return (
     <AdminLayout>
       <div className="space-y-6">
-
         {/* HEADER */}
         <div>
           <h1 className="text-3xl lg:text-4xl font-black text-[#020B2D]">
@@ -144,7 +176,6 @@ const Customers = () => {
 
         {/* STATS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
-
           {stats.map((item) => {
             const Icon = item.icon;
 
@@ -154,7 +185,6 @@ const Customers = () => {
                 className="bg-white border border-[#EEF2F6] rounded-3xl p-5"
               >
                 <div className="flex items-center justify-between">
-
                   <div>
                     <p className="text-sm text-[#6E7C96]">
                       {item.title}
@@ -171,12 +201,10 @@ const Customers = () => {
                       className="text-[#00B67A]"
                     />
                   </div>
-
                 </div>
               </div>
             );
           })}
-
         </div>
 
         <DataTable
@@ -184,7 +212,6 @@ const Customers = () => {
           columns={columns}
           searchPlaceholder="Search customers..."
         />
-
       </div>
     </AdminLayout>
   );

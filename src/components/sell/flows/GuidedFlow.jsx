@@ -711,7 +711,7 @@ LG Split AC, Godrej Office Chair,
       <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-6">
 
         <p className="text-white/40 text-sm mb-2">
-          Brand
+          Brand/Manufacturer
         </p>
 
         <h3 className="text-white text-xl">

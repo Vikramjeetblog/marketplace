@@ -16,7 +16,7 @@ import Footer from "./components/layout/Footer";
 // MAIN PAGES
 import HomePage from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
+
 
 // SELL / DISCOVER
 import SellAssetsPage from "./pages/SellAssetsPage";
@@ -83,11 +83,7 @@ const AppContent = () => {
           element={<LoginPage />}
         />
 
-        <Route
-          path="/signup"
-          element={<SignupPage />}
-        />
-
+        
         {/* SELL */}
         <Route
           path="/sell-assets"

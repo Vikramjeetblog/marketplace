@@ -8,6 +8,7 @@ import {
   useUserStore,
 } from "../store/useUserStore";
 import toast from "react-hot-toast";
+import api from "../api/axios";
 const LoginPage = ({ setShowLogin, setIsLoggedIn, setUser, }) => {
   const [step, setStep] = useState(1);
  const { login } = useUserStore();
@@ -20,7 +21,7 @@ const LoginPage = ({ setShowLogin, setIsLoggedIn, setUser, }) => {
     otp: "",
   });
 
-  const DEMO_OTP = "123456";
+  
 
   const handleChange = (e) => {
     setFormData({
@@ -31,49 +32,57 @@ const LoginPage = ({ setShowLogin, setIsLoggedIn, setUser, }) => {
     setError("");
   };
 
- const handlePhoneSubmit = () => {
+ const handlePhoneSubmit = async () => {
+try {
+setError("");
 
-  if (formData.phone.length < 10) {
 
-    setError(
-      "Please enter valid mobile number"
-    );
+if (formData.phone.length < 10) {
+  setError(
+    "Please enter valid mobile number"
+  );
+  return;
+}
 
-    return;
+const response = await api.post(
+  "/api/auth/check-user",
+  {
+    phone: formData.phone,
   }
+);
 
-  // GET SAVED USER
-  const existingUser =
-    JSON.parse(
-      localStorage.getItem(
-        "rupantarUser"
-      )
-    );
+const data = response.data;
 
-  // EXISTING USER
-  if (
-    existingUser &&
-    existingUser.phone ===
-      formData.phone
-  ) {
+if (data.exists) {
+  setFormData((prev) => ({
+    ...prev,
+    name:
+      data.user?.full_name || "",
+    email:
+      data.user?.email || "",
+    otp: "",
+  }));
 
-    // STORE COMPLETE DATA
-    setFormData({
-      phone: formData.phone,
-      name: existingUser.name,
-      email: existingUser.email,
-      otp: "",
-    });
+  // Existing User → OTP Screen
+  setStep(3);
+} else {
+  // New User → Details Screen
+  setStep(2);
+}
 
-    // DIRECT OTP SCREEN
-    setStep(3);
 
-  } else {
+} catch (error) {
+console.error(error);
 
-    // NEW USER FLOW
-    setStep(2);
-  }
+
+setError(
+  "Unable to verify user"
+);
+
+
+}
 };
+
   const handleDetailsSubmit = () => {
     if (!formData.name || !formData.email) {
       setError("Please fill all details");
@@ -83,53 +92,66 @@ const LoginPage = ({ setShowLogin, setIsLoggedIn, setUser, }) => {
     setStep(3);
   };
 
- const handleVerifyOTP = () => {
+ const DEMO_OTP = "123456";
 
-  if (
-    formData.otp !==
-    DEMO_OTP
-  ) {
+const handleVerifyOTP = async () => {
+try {
+setError("");
 
-    setError(
-      "Invalid OTP. Use 123456"
-    );
 
-    return;
+// Demo OTP Validation
+if (formData.otp !== DEMO_OTP) {
+  setError("Invalid OTP. Use 123456");
+  return;
+}
+
+const response = await api.post(
+  "/api/auth/login",
+  {
+    phone: formData.phone,
+    full_name: formData.name,
+    email: formData.email,
+    otp: formData.otp,
   }
+);
 
-  const existingUser =
-    JSON.parse(
-      localStorage.getItem(
-        "rupantarUser"
-      )
-    );
+const {
+  token,
+  user,
+} = response.data;
 
-  const userData =
-    existingUser &&
-    existingUser.phone ===
-      formData.phone
-      ? existingUser
-      : {
-          name:
-            formData.name,
+// Save JWT
+localStorage.setItem(
+  "token",
+  token
+);
 
-          email:
-            formData.email,
+// Save User In Zustand
+login(user);
 
-          phone:
-            formData.phone,
-        };
-
-  // UPDATE ZUSTAND STORE
-  login(userData);
 toast.success(
-  `Welcome back ${
-    userData.name || ""
+  `Welcome ${
+    user.full_name || ""
   }`
 );
-  // CLOSE MODAL
-  setShowLogin(false);
+
+setShowLogin(false);
+
+
+} catch (error) {
+console.error(error);
+
+
+setError(
+  error?.response?.data
+    ?.message ||
+    "Login failed"
+);
+
+
+}
 };
+
   return (
     <div className="fixed inset-0 z-[200] bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
 
