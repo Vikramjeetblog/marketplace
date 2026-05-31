@@ -4,13 +4,14 @@ import {
   Package,
   Eye,
   Trash2,
-ArrowLeft,
-IndianRupee,
-Package,
-Eye,
-Trash2,
 } from "lucide-react";
-import { Link, useLocation, useParams } from "react-router-dom";
+
+import {
+  Link,
+  useLocation,
+  useParams,
+} from "react-router-dom";
+
 import AdminLayout from "../layout/AdminLayout";
 
 const products = {
@@ -71,14 +72,19 @@ const getStatusClass = (status) => {
     "Out Of Stock": "bg-red-100 text-red-700",
   };
 
-  return classes[status] || "bg-yellow-100 text-yellow-700";
+  return (
+    classes[status] ||
+    "bg-yellow-100 text-yellow-700"
+  );
 };
 
 const ProductDetails = () => {
   const { id } = useParams();
   const location = useLocation();
 
-  const product = location.state?.product || products[id];
+  const product =
+    location.state?.product ||
+    products[id];
 
   if (!product) {
     return (
@@ -94,14 +100,12 @@ const ProductDetails = () => {
 
   return (
     <AdminLayout>
-
       <div className="space-y-6">
 
         {/* HEADER */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
           <div>
-
             <Link
               to="/admin/products"
               className="inline-flex items-center gap-2 text-[#6E7C96] hover:text-[#020B2D] mb-3"
@@ -113,11 +117,12 @@ const ProductDetails = () => {
             <h1 className="text-3xl lg:text-4xl font-black text-[#020B2D]">
               Listing Details
             </h1>
-
           </div>
 
           <span
-            className={`px-4 py-2 rounded-full text-sm font-semibold ${getStatusClass(product.status)}`}
+            className={`px-4 py-2 rounded-full text-sm font-semibold ${getStatusClass(
+              product.status
+            )}`}
           >
             {product.status}
           </span>
@@ -136,15 +141,16 @@ const ProductDetails = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-              {product.images.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt=""
-                  className="w-full h-[220px] rounded-2xl object-cover"
-                />
-              ))}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {product.images?.map(
+                (image, index) => (
+                  <img
+                    key={index}
+                    src={image}
+                    alt={`${product.title}-${index}`}
+                    className="w-full h-[220px] rounded-2xl object-cover"
+                  />
+                )
+              )}
 
             </div>
 
@@ -159,12 +165,39 @@ const ProductDetails = () => {
 
             <div className="space-y-5">
 
-              <InfoRow label="Product ID" value={product.id} />
-              <InfoRow label="Title" value={product.title} />
-              <InfoRow label="Category" value={product.category} />
-              <InfoRow label="Status" value={product.status} />
-              <InfoRow label="Stock" value={product.stock} />
-              <InfoRow label="Featured" value={product.featured ? "Yes" : "No"} />
+              <InfoRow
+                label="Product ID"
+                value={product.id}
+              />
+
+              <InfoRow
+                label="Title"
+                value={product.title}
+              />
+
+              <InfoRow
+                label="Category"
+                value={product.category}
+              />
+
+              <InfoRow
+                label="Status"
+                value={product.status}
+              />
+
+              <InfoRow
+                label="Stock"
+                value={product.stock}
+              />
+
+              <InfoRow
+                label="Featured"
+                value={
+                  product.featured
+                    ? "Yes"
+                    : "No"
+                }
+              />
 
             </div>
 
@@ -210,50 +243,21 @@ const ProductDetails = () => {
           <Link
             to={`/admin/products/${product.id}/edit`}
             state={{ product }}
-            className="
-              h-12
-              rounded-xl
-              bg-[#00B67A]
-              text-white
-              font-semibold
-              flex
-              items-center
-              justify-center
-              gap-2
-            "
+            className="h-12 rounded-xl bg-[#00B67A] text-white font-semibold flex items-center justify-center gap-2"
           >
             <Package size={18} />
             Edit Listing
           </Link>
 
           <button
-            className="
-              h-12
-              rounded-xl
-              border
-              border-[#E5EEF8]
-              flex
-              items-center
-              justify-center
-              gap-2
-            "
+            className="h-12 rounded-xl border border-[#E5EEF8] flex items-center justify-center gap-2"
           >
             <Eye size={18} />
             Preview Listing
           </button>
 
           <button
-            className="
-              h-12
-              rounded-xl
-              border
-              border-red-200
-              text-red-600
-              flex
-              items-center
-              justify-center
-              gap-2
-            "
+            className="h-12 rounded-xl border border-red-200 text-red-600 flex items-center justify-center gap-2"
           >
             <Trash2 size={18} />
             Delete Listing
@@ -262,13 +266,16 @@ const ProductDetails = () => {
         </div>
 
       </div>
-
     </AdminLayout>
   );
 };
 
-const InfoRow = ({ label, value }) => (
+const InfoRow = ({
+  label,
+  value,
+}) => (
   <div className="flex justify-between gap-4">
+
     <span className="text-[#6E7C96]">
       {label}
     </span>
@@ -276,6 +283,7 @@ const InfoRow = ({ label, value }) => (
     <span className="font-semibold text-right">
       {value}
     </span>
+
   </div>
 );
 
