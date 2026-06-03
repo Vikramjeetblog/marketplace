@@ -2,17 +2,21 @@ const db = require("../config/db");
 
 const getUsers = async (req, res) => {
 try {
-const [users] = await db.execute(`SELECT
-        id,
-        full_name,
-        email,
-        phone,
-        role,
-        is_verified,
-        created_at
-      FROM users
-      ORDER BY id DESC
-    `);
+const [users] = await db.execute(
+  `
+  SELECT
+    id,
+    full_name,
+    email,
+    phone,
+    role,
+    is_verified,
+    created_at
+  FROM users
+  WHERE id = ?
+  `,
+  [id]
+);
 
 
 return res.status(200).json({

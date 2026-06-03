@@ -5,14 +5,16 @@ const db = require("./config/db");
 const app = express();
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require('./routes/userRoutes');
-
+const sellRoutes = require('./routes/sellRoutes');
+const categoryRoutes = require("./routes/categoryRoutes");
 /* Middlewares */
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth",authRoutes);
-app.use("/api/users", userRoutes)
-
+app.use("/api/users", userRoutes);
+app.use("/api/sell",sellRoutes);
+app.use("/api/categories",categoryRoutes);
 /* API Health Check */
 app.get("/", (req, res) => {
   res.status(200).json({

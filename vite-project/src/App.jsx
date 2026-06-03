@@ -1,5 +1,5 @@
 import React from "react";
-
+import ProtectedAdminRoute from "./routes/ProtectedAdminRoute";
 import {
   BrowserRouter,
   Route,
@@ -91,7 +91,7 @@ const AppContent = () => {
         />
 
         <Route
-          path="/sell/:categoryId"
+          path="/sell/:slug"
           element={<SellCategoryPage />}
         />
 
@@ -162,74 +162,150 @@ const AppContent = () => {
           element={<CartPage />}
         />
 
-        {/* ADMIN */}
-        <Route
-          path="/admin/requests"
-          element={<SellRequests />}
-        />
-        <Route
-          path="/admin/requests/:id"
-          element={<RequestDetails />}
-        />
-        <Route
-  path="/admin/products"
-  element={<MarketplaceProducts />}
-/>
+{/* ADMIN */}
+
 <Route
-  path="/admin/products/:id"
-  element={<ProductDetails />}
+  path="/admin"
+  element={
+    <ProtectedAdminRoute>
+      <Dashboard />
+    </ProtectedAdminRoute>
+  }
 />
+
 <Route
-  path="/admin/products/:id/edit"
-  element={<EditProduct />}
+  path="/admin/requests"
+  element={
+    <ProtectedAdminRoute>
+      <SellRequests />
+    </ProtectedAdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/requests/:id"
+  element={
+    <ProtectedAdminRoute>
+      <RequestDetails />
+    </ProtectedAdminRoute>
+  }
 />
 
 <Route
   path="/admin/requests/:id/offer"
-  element={<OfferGeneration />}
+  element={
+    <ProtectedAdminRoute>
+      <OfferGeneration />
+    </ProtectedAdminRoute>
+  }
 />
-    <Route
-  path="/admin"
-  element={<Dashboard />}
+
+<Route
+  path="/admin/products"
+  element={
+    <ProtectedAdminRoute>
+      <MarketplaceProducts />
+    </ProtectedAdminRoute>
+  }
 />
+
+<Route
+  path="/admin/products/:id"
+  element={
+    <ProtectedAdminRoute>
+      <ProductDetails />
+    </ProtectedAdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/products/:id/edit"
+  element={
+    <ProtectedAdminRoute>
+      <EditProduct />
+    </ProtectedAdminRoute>
+  }
+/>
+
 <Route
   path="/admin/orders"
-  element={<Orders />}
+  element={
+    <ProtectedAdminRoute>
+      <Orders />
+    </ProtectedAdminRoute>
+  }
 />
 
 <Route
   path="/admin/orders/:id"
-  element={<OrderDetails />}
+  element={
+    <ProtectedAdminRoute>
+      <OrderDetails />
+    </ProtectedAdminRoute>
+  }
 />
+
 <Route
-  path="/admin/customers/"
-  element={<Customers />}
+  path="/admin/customers"
+  element={
+    <ProtectedAdminRoute>
+      <Customers />
+    </ProtectedAdminRoute>
+  }
 />
+
 <Route
   path="/admin/customers/:id"
-  element={<CustomerDetails />}
+  element={
+    <ProtectedAdminRoute>
+      <CustomerDetails />
+    </ProtectedAdminRoute>
+  }
 />
-<Route
-  path="/admin/settings/"
-  element={<Settings/>}
-/>
+
 <Route
   path="/admin/pickups"
-  element={<PickupManagement />}
+  element={
+    <ProtectedAdminRoute>
+      <PickupManagement />
+    </ProtectedAdminRoute>
+  }
 />
 
 <Route
   path="/admin/pickups/:id"
-  element={<PickupDetails />}
+  element={
+    <ProtectedAdminRoute>
+      <PickupDetails />
+    </ProtectedAdminRoute>
+  }
 />
+
 <Route
   path="/admin/inventory"
-  element={<Inventory />}
+  element={
+    <ProtectedAdminRoute>
+      <Inventory />
+    </ProtectedAdminRoute>
+  }
 />
 
 <Route
   path="/admin/inventory/:id"
-  element={<InventoryDetails />}
+  element={
+    <ProtectedAdminRoute>
+      <InventoryDetails />
+    </ProtectedAdminRoute>
+  }
+/>
+
+<Route
+  path="/admin/settings"
+  element={
+    <ProtectedAdminRoute>
+      <Settings />
+    </ProtectedAdminRoute>
+  }
 />
       </Routes>
 
